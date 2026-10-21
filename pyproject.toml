@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "Prompt-payment and holdback deadline assistant for Alberta and Ontario construction work (verified rules only)"
 readme = "README.md"
 requires-python = ">=3.9"
+license = "MIT"
 authors = [{ name = "calasdan-sketch" }]
 keywords = ["prompt-payment", "holdback", "construction", "lien", "alberta", "ontario", "deadlines"]
 classifiers = [
