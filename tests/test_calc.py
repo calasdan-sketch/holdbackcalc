@@ -60,8 +60,8 @@ def test_on_annual_holdback_2026_rules():
     table = on_annual_holdback(D(2026, 1, 1))
     notice = by_label(table, "publish annual-release notice by")
     assert notice.date == D(2026, 1, 15)                 # anniversary +14
-    earliest = by_label(table, "earliest payment of accrued holdback")
-    latest = by_label(table, "latest payment of accrued holdback")
+    earliest = by_label(table, "payment window opens (if notice is published on its last day)")
+    latest = by_label(table, "latest possible payment (if notice is published on its last day)")
     assert earliest.date == D(2026, 3, 16)               # notice +60
     assert latest.date == D(2026, 3, 30)                 # notice +74
     assert earliest.date < latest.date

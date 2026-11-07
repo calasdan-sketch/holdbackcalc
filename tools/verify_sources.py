@@ -55,9 +55,26 @@ def load(key, kind, url, from_dir):
         with os.fdopen(fd, "wb") as fh:
             fh.write(data)
     if kind == "pdf":
-        return pdf_to_text(path)
-    with open(path, "rb") as fh:
-        return html_to_text(fh.read().decode("utf-8", "replace"))
+        text = pdf_to_text(path)
+    else:
+        with open(path, "rb") as fh:
+            text = html_to_text(fh.read().decode("utf-8", "replace"))
+    return plausible(key, text)
+
+
+MIN_CHARS = 20_000      # every official text here is far longer; a short page is a JS shell / block page
+
+
+def plausible(key, text):
+    """A response that is not the statute (JS shell, bot-check, error page) must be SKIPPED, not FAILed."""
+    if text is None:
+        return None
+    if len(text) < MIN_CHARS:
+        print(f"  {key}: response is only {len(text)} characters - not the statute text "
+              "(a script-rendered or blocked page?). Treating as unavailable. Save the page in a "
+              f"browser as {key}.html (or .pdf) and use --from-dir.", file=sys.stderr)
+        return None
+    return text
 
 
 def main(argv=None):

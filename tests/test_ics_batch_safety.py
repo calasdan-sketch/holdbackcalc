@@ -122,8 +122,9 @@ def test_batch_one_bad_row_rejects_all(tmp_path, capsys):
 def test_batch_binary_nul_and_bad_utf8(tmp_path):
     with pytest.raises(batch.BatchError):
         batch.read_rows(_write(tmp_path, b"project,command,date\nA\x00,ab-invoice,2026-01-01\n"))
-    with pytest.raises(batch.BatchError):
-        batch.read_rows(_write(tmp_path, b"project,command,date\n\xff\xfe,ab-invoice,2026-01-01\n", "b.csv"))
+    # non-UTF-8 bytes are read as Windows-1252 (what Excel writes), with a stderr note
+    rows = batch.read_rows(_write(tmp_path, b"project,command,date\nCaf\xe9,ab-invoice,2026-01-01\n", "b.csv"))
+    assert rows[0][0] == "Café"
 
 
 def test_batch_huge_file_rejected(tmp_path):

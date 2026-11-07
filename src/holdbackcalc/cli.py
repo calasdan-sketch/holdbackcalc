@@ -2,17 +2,21 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
+import csv
 import datetime as dt
 import json
+import os
 import sys
 from typing import Optional
 
-from . import __version__, batch as batchmod
+from . import __version__, batch as batchmod, calc
 from .calc import SECTORS, Deadline, on_lien_events
 from .ics import DISCLAIMER, build_ics
 from .rules import APPLICABILITY, READ_ON, REGISTRY, SOURCES, UNVERIFIED
 from .textsafe import clean
 
+STALE_DAYS = 180
 NOTE = "administrative reminders, not legal advice"
 
 
@@ -41,9 +45,47 @@ def _jur(cmd: str) -> Optional[str]:
     return "AB" if cmd.startswith("ab-") else "ON" if cmd.startswith("on-") else None
 
 
+def _ascii_only() -> bool:
+    enc = (getattr(sys.stdout, "encoding", None) or "utf-8").lower().replace("-", "")
+    return enc not in ("utf8", "utf8sig")
+
+
+def _csv_cell(text: str) -> str:
+    """Neutralise spreadsheet formula injection (cells starting = + - @ tab CR)."""
+    text = clean(str(text), 400)
+    return "'" + text if text[:1] in ("=", "+", "-", "@") else text
+
+
+def _stale_note(today: Optional[dt.date]) -> str:
+    ref = today or dt.date.today()
+    age = (ref - dt.date.fromisoformat(READ_ON)).days
+    if age > STALE_DAYS:
+        return (f"WARNING: the rules were last checked against the statutes on {READ_ON} ({age} days "
+                "ago); amendments since then are not reflected. Run tools/verify_sources.py.")
+    return ""
+
+
 def _emit(items, args, cmd: str) -> int:
     """items: list of (project, command, Deadline)."""
     today = args.today
+    if args.within is not None:
+        if today is None:
+            print("holdbackcalc: error: --within needs --today", file=sys.stderr)
+            return 2
+        items = [t for t in items if t[2].date is not None and (t[2].date - today).days <= args.within
+                 and (t[2].hard or t[2].date >= today)]
+        if not items:
+            print(f"Nothing due or overdue within {args.within} days of {today.isoformat()}.")
+            return 0
+    if args.csv:
+        w = csv.writer(sys.stdout, lineterminator="\n")
+        w.writerow(["project", "command", "label", "date", "weekday", "plan_by", "days_left", "hard", "cite", "basis"])
+        for p, c, d in items:
+            w.writerow([_csv_cell(p), c, _csv_cell(d.label), d.date.isoformat() if d.date else "",
+                        d.date.strftime("%a") if d.date else "", d.plan_by.isoformat() if d.plan_by else "",
+                        (d.date - today).days if (d.date and today) else "", "yes" if d.hard else "no",
+                        _csv_cell(d.cite), _csv_cell(d.basis)])
+        return 0
     if args.ics:
         sys.stdout.write(build_ics(items))
         return 0
@@ -59,7 +101,7 @@ def _emit(items, args, cmd: str) -> int:
             rows.append(r)
         print(json.dumps({"schedule": rows, "note": NOTE, "disclaimer": DISCLAIMER,
                           "applicability": [t for j in jurs for t in APPLICABILITY[j]],
-                          "rules_read_on": READ_ON}, indent=2, ensure_ascii=False))
+                          "rules_read_on": READ_ON, "stale_warning": _stale_note(today) or None}, indent=2, ensure_ascii=_ascii_only()))
         return 0
     has_proj = any(p for p, _c, _d in items)
     lw = max(len(d.label) for _p, _c, d in items)
@@ -70,28 +112,52 @@ def _emit(items, args, cmd: str) -> int:
         prefix = f"{p:<{pw}}  " if has_proj else ""
         st_s = f"{st:<12}  " if today is not None else ""
         cite = f"  [{d.cite}]" if d.cite else ""
-        print(f"{prefix}{d.label:<{lw}}  {date_s:>10}  {st_s}{d.basis}{cite}")
+        wd = d.date.strftime("%a") if d.date else "   "
+        print(f"{prefix}{d.label:<{lw}}  {date_s:>10} {wd}  {st_s}{d.basis}{cite}")
+        pad = f"{'':<{(pw + 2) if has_proj else 0}}    "
         if d.rolled:
-            print(f"{'':<{(pw + 2) if has_proj else 0}}    note: that day is a Sunday/holiday; the statute may allow "
+            print(f"{pad}note: that day is a Sunday/holiday; the statute may allow "
                   f"{d.rolled.isoformat()} - plan to the earlier date")
+        if d.plan_by:
+            print(f"{pad}note: falls on a weekend/holiday - last business day to act is {d.plan_by.isoformat()} "
+                  f"({d.plan_by.strftime('%a')})")
+        if d.closed_office:
+            print(f"{pad}note: Saturday filing deadline - if the office where you file is closed, the time-limit "
+                  "statute MAY extend it to the next open day (ON Legislation Act s.89(2); AB Interpretation "
+                  "Act s.22(2)). Do not rely on that; file by the Friday.")
     if jurs:
         print("\nCheck scope before relying on this:")
         for j in jurs:
             for t in APPLICABILITY[j]:
                 print(f"  - {t}")
+    stale = _stale_note(today)
+    if stale:
+        print(f"\n{stale}")
     print("\nAdministrative reminders, not legal advice — verify anything that matters.")
     return 0
 
 
 def main(argv: list[str] | None = None) -> int:
+    for stream in (sys.stdout, sys.stderr):      # legacy Windows consoles cannot print arrows/dashes
+        try:
+            stream.reconfigure(errors="replace")
+        except (AttributeError, ValueError):
+            pass
     ap = argparse.ArgumentParser(
         prog="holdbackcalc",
         description="Prompt-payment/holdback/lien deadlines for AB & ON construction work "
                     "(verified rules only; NOT legal advice).",
     )
     ap.add_argument("--version", action="version", version=f"holdbackcalc {__version__}")
-    ap.add_argument("--json", action="store_true", help="machine-readable schedule")
-    ap.add_argument("--ics", action="store_true", help="print an iCalendar (.ics) file instead of a table")
+    fmt = ap.add_mutually_exclusive_group()
+    fmt.add_argument("--json", action="store_true", help="machine-readable schedule")
+    fmt.add_argument("--ics", action="store_true", help="print an iCalendar (.ics) file instead of a table")
+    fmt.add_argument("--csv", action="store_true", help="spreadsheet-safe CSV (formula characters neutralised)")
+    ap.add_argument("--out", metavar="FILE",
+                    help="write the result to FILE as UTF-8 (use this instead of > on Windows PowerShell, "
+                         "which would write UTF-16); refuses to overwrite an existing file")
+    ap.add_argument("--within", type=int, metavar="N",
+                    help="with --today: show only deadlines due in the next N days or already overdue")
     ap.add_argument("--today", type=_date, help="YYYY-MM-DD: show days left / OVERDUE against this date")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
@@ -118,8 +184,8 @@ def main(argv: list[str] | None = None) -> int:
     onl.add_argument("trigger", type=_date, help="e.g. publication of substantial performance")
 
     one = sub.add_parser("on-lien-events", help="Ontario: s.31 lien expiry from the EARLIEST applicable event")
-    one.add_argument("--role", choices=("contractor", "other"), required=True,
-                     help="contractor, or other (subcontractor/supplier)")
+    one.add_argument("--role", choices=("contractor", "other", "trustee"), required=True,
+                     help="contractor; other (subcontractor/supplier); trustee (workers' trust fund lien)")
     one.add_argument("--cert-published", type=_date, help="date the certificate of substantial performance was published")
     one.add_argument("--completed", type=_date, help="contract completed/abandoned/terminated")
     one.add_argument("--last-supply", type=_date, help="you last supplied services/materials (role other)")
@@ -142,6 +208,11 @@ def main(argv: list[str] | None = None) -> int:
 
     ona = sub.add_parser("on-annual", help="Ontario: annual holdback release for >1yr contracts (2026 rules)")
     ona.add_argument("anniversary", type=_date)
+    ona.add_argument("--published", type=_date, help="date the owner actually published the annual-release notice")
+
+    onf = sub.add_parser("on-annual-first", help="Ontario: first annual release for a contract date (s.87.4 transition)")
+    onf.add_argument("contract_date", type=_date, help="date the contract was entered into")
+    onf.add_argument("--published", type=_date, help="date the owner actually published the notice")
 
     onj = sub.add_parser("on-adjudication", help="Ontario: last day for a notice of adjudication")
     onj.add_argument("completed", type=_date, help="contract completed/abandoned/terminated")
@@ -149,13 +220,30 @@ def main(argv: list[str] | None = None) -> int:
                      help="subcontracts: subcontract-certified / last-supply dates (repeatable); earliest wins")
 
     bt = sub.add_parser("batch", help="many jobs from a CSV (columns: project,command,date[,certificate,registered,sector])")
-    bt.add_argument("csv")
+    bt.add_argument("csv_path", metavar="csv")
 
     sub.add_parser("rules", help="list every encoded rule with its citation and source")
 
     sub.add_parser("what-we-dont-encode", help="list the rules deliberately left out as unverified")
 
     args = ap.parse_args(argv)
+    if args.out:
+        if os.path.exists(args.out):
+            print(f"holdbackcalc: error: {clean(args.out, 80)} already exists; choose a new name", file=sys.stderr)
+            return 2
+        try:
+            fh = open(args.out, "x", encoding="utf-8", newline="")
+        except OSError as exc:
+            print(f"holdbackcalc: error: cannot write {clean(args.out, 80)}: {exc.strerror or exc}", file=sys.stderr)
+            return 2
+        args.out = None
+        with fh, contextlib.redirect_stdout(fh):
+            rc = _dispatch(args)
+        return rc
+    return _dispatch(args)
+
+
+def _dispatch(args) -> int:
 
     if args.cmd == "what-we-dont-encode":
         for line in UNVERIFIED:
@@ -178,7 +266,7 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         if args.cmd == "batch":
-            rows = batchmod.read_rows(args.csv)
+            rows = batchmod.read_rows(args.csv_path)
             items = [(p, c, d) for p, c, dl in rows for d in dl]
             items.sort(key=lambda t: (t[2].date is None, t[2].date or dt.date.max, t[0]))
             return _emit(items, args, "batch")
@@ -186,11 +274,15 @@ def main(argv: list[str] | None = None) -> int:
             dl = on_lien_events(args.role, cert_published=args.cert_published, completed=args.completed,
                                 last_supply=args.last_supply, subcontract_certified=args.subcontract_certified,
                                 supply_before_sp=args.supply_before_sp, terminated=args.terminated)
+        elif args.cmd == "on-annual":
+            dl = calc.on_annual_holdback(args.anniversary, args.published)
+        elif args.cmd == "on-annual-first":
+            dl = calc.on_annual_from_contract(args.contract_date, args.published)
         else:
             first = {"ab-invoice": "received", "ab-sub-payment": "owner_paid", "ab-lien": "last_work",
                      "ab-holdback": "completed", "ab-adjudication": "final_payment", "on-lien": "trigger",
                      "on-holdback": "trigger", "on-invoice": "received", "on-prompt-payment": "received",
-                     "on-sub-payment": "owner_paid", "on-annual": "anniversary",
+                     "on-sub-payment": "owner_paid",
                      "on-adjudication": "completed"}[args.cmd]
             dl = batchmod.run(args.cmd, getattr(args, first),
                               certificate=getattr(args, "certificate", None),

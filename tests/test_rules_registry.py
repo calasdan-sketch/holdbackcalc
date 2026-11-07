@@ -67,7 +67,18 @@ def _load_tool():
     spec = importlib.util.spec_from_file_location("verify_sources", os.path.join(ROOT, "tools", "verify_sources.py"))
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
+    mod.MIN_CHARS = 0          # these tests use tiny synthetic texts
     return mod
+
+
+def test_verifier_skips_a_shell_page_instead_of_failing(tmp_path, capsys):
+    tool = _load_tool()
+    tool.MIN_CHARS = 20_000
+    (tmp_path / "ON_ACT.html").write_text("<html><body>Loading...</body></html>")
+    assert tool.main(["--from-dir", str(tmp_path)]) == 0       # nothing FAILED
+    out = capsys.readouterr()
+    assert "FAIL" not in out.out and "SKIPPED on.lien.preserve_days" in out.out
+    assert "not the statute text" in out.err
 
 
 def test_verifier_flags_missing_phrase_and_skips_missing_sources(tmp_path, capsys):

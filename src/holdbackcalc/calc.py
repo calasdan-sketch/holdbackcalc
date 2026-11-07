@@ -16,7 +16,7 @@ from . import rules as R
 from .holidays import is_holiday, roll_forward
 
 SECTORS = ("standard", "oil-gas", "concrete")
-ROLES = ("contractor", "other")
+ROLES = ("contractor", "other", "trustee")
 
 
 @dataclass(frozen=True)
@@ -28,12 +28,17 @@ class Deadline:
     hard: bool = True          # False = window/reminder rather than a hard date
     cite: str = ""             # statute section the rule comes from
     rolled: Optional[dt.date] = None   # later date IF the holiday rule applies (else None)
+    plan_by: Optional[dt.date] = None  # last business day on/before `date` when `date` is a weekend/holiday
+    closed_office: bool = False        # filing deadline on a Saturday: office-closed extension MAY apply
 
     def as_dict(self):
         return {"label": self.label, "date": self.date.isoformat() if self.date else None,
                 "basis": self.basis, "days": self.days, "hard": self.hard,
                 "cite": self.cite,
-                "rolled_forward_to": self.rolled.isoformat() if self.rolled else None}
+                "rolled_forward_to": self.rolled.isoformat() if self.rolled else None,
+                "weekday": self.date.strftime("%a") if self.date else None,
+                "plan_by": self.plan_by.isoformat() if self.plan_by else None,
+                "closed_office_note": self.closed_office}
 
 
 def _d(anchor: dt.date, days: int) -> dt.date:
@@ -41,11 +46,23 @@ def _d(anchor: dt.date, days: int) -> dt.date:
 
 
 def _mk(jur: str, label: str, date: Optional[dt.date], basis: str, days: int,
-        hard: bool = True, cite: str = "") -> Deadline:
-    rolled = None
-    if date is not None and is_holiday(jur, date):
-        rolled = roll_forward(jur, date)
-    return Deadline(label, date, basis, days, hard, cite, rolled)
+        hard: bool = True, cite: str = "", filing: bool = False) -> Deadline:
+    """filing=True marks a registration/filing/notice-to-court style deadline, for which both
+    provinces' time rules (ON Legislation Act s.89(2); AB Interpretation Act s.22(2)) may extend
+    a deadline that falls on a day the office is closed."""
+    rolled = plan_by = None
+    closed = False
+    if date is not None:
+        wd = date.weekday()
+        hol = wd == 6 or is_holiday(jur, date)
+        if hol:
+            rolled = roll_forward(jur, date)
+        if wd >= 5 or hol:
+            plan_by = date
+            while plan_by.weekday() >= 5 or is_holiday(jur, plan_by):
+                plan_by -= dt.timedelta(days=1)
+        closed = filing and wd == 5 and not hol
+    return Deadline(label, date, basis, days, hard, cite, rolled, plan_by, closed)
 
 
 def _sector(sector: str) -> None:
@@ -94,12 +111,12 @@ def ab_lien(last_work: dt.date, sector: str = "standard",
     n = _ab_days(sector, R.AB_LIEN_REGISTER_DAYS, R.AB_LIEN_REGISTER_DAYS_SPECIAL)
     out = [_mk("AB", "register lien by", _d(last_work, n),
                f"register the lien within {n} days of the last materials/services supplied, or of "
-               "completion or abandonment of the contract/subcontract", n, cite="PPCLA s.41")]
+               "completion or abandonment of the contract/subcontract", n, cite="PPCLA s.41", filing=True)]
     if registered is not None:
         out.append(_mk("AB", "commence action + register lis pendens by", _d(registered, R.AB_LIS_PENDENS_DAYS),
                        f"the registered lien ceases to exist unless an action is started and a "
                        f"certificate of lis pendens registered within {R.AB_LIS_PENDENS_DAYS} days of "
-                       "registration", R.AB_LIS_PENDENS_DAYS, cite="PPCLA s.43(1)"))
+                       "registration", R.AB_LIS_PENDENS_DAYS, cite="PPCLA s.43(1)", filing=True))
     else:
         out.append(Deadline("commence action + register lis pendens by", None,
                             f"{R.AB_LIS_PENDENS_DAYS} days after the date the lien is REGISTERED - "
@@ -135,7 +152,7 @@ def ab_adjudication(final_payment: dt.date) -> List[Deadline]:
     """Alberta: last day to give a notice of adjudication."""
     return [_mk("AB", "notice of adjudication by", _d(final_payment, R.AB_ADJUDICATION_DAYS),
                 "no adjudication if notice is given more than 30 days after the date of final payment "
-                "(unless the parties agree otherwise)", R.AB_ADJUDICATION_DAYS, cite="PPCLA s.33.4(2)")]
+                "(unless the parties agree otherwise)", R.AB_ADJUDICATION_DAYS, cite="PPCLA s.33.4(2)", filing=True)]
 
 
 # ----------------------------------------------------------------- Ontario
@@ -146,11 +163,13 @@ def on_lien(last_supply: dt.date) -> List[Deadline]:
     return [
         _mk("ON", "preserve lien by", preserve,
             f"lien must be preserved within {R.ON_LIEN_PRESERVE_DAYS} days of the trigger event", 60,
-            cite="Construction Act s.31"),
+            cite="Construction Act s.31", filing=True),
         _mk("ON", "perfect lien by (commence action)",
             _d(preserve, R.ON_LIEN_PERFECT_DAYS),
             f"{R.ON_LIEN_PERFECT_DAYS} days to commence the action, running from the last "
-            "day the lien could have been preserved", 150, cite="Construction Act s.36(2)"),
+            "day the lien could have been preserved; ONLY if the lien was actually preserved "
+            "first (s.36(1)) - a missed preservation date cannot be cured by this one",
+            150, cite="Construction Act s.36(2)", filing=True),
     ]
 
 
@@ -164,6 +183,8 @@ def on_lien_events(role: str, *, cert_published: Optional[dt.date] = None,
     role "contractor": cert publication (only for supply on/before the SP date) and
         completion/abandonment/termination.
     role "other" (sub, supplier...): also last supply and subcontract certified complete.
+    role "trustee" (workers' trust fund lien, s.31(2.1)): same events; pass the date the final
+        worker who is a beneficiary of the fund last supplied services as `last_supply`.
     supply_before_sp: True when the supply was on/before the certified date of substantial
         performance (s.31(2)(a)/(3)(a)); False for no certificate or later supply ((b)).
     """
@@ -173,7 +194,7 @@ def on_lien_events(role: str, *, cert_published: Optional[dt.date] = None,
     if supply_before_sp:
         cands["certificate of substantial performance published"] = cert_published
     cands["contract completed/abandoned/terminated"] = completed
-    if role == "other":
+    if role in ("other", "trustee"):
         cands["you last supplied services/materials"] = last_supply
         cands["subcontract certified complete"] = subcontract_certified
     present = {k: v for k, v in cands.items() if v is not None}
@@ -182,13 +203,17 @@ def on_lien_events(role: str, *, cert_published: Optional[dt.date] = None,
     which = min(present, key=lambda k: (present[k], k))
     event = present[which]
     preserve = _d(event, R.ON_LIEN_PRESERVE_DAYS)
-    cite = "Construction Act s.31(2)" if role == "contractor" else "Construction Act s.31(3)"
+    cite = {"contractor": "Construction Act s.31(2)", "other": "Construction Act s.31(3)",
+            "trustee": "Construction Act s.31(2.1)"}[role]
     out = [
         _mk("ON", "preserve lien by", preserve,
-            f"60 days after the earliest applicable event: {which} ({event.isoformat()})", 60, cite=cite),
+            f"60 days after the earliest applicable event: {which} ({event.isoformat()})", 60, cite=cite,
+            filing=True),
         _mk("ON", "perfect lien by (commence action)", _d(preserve, R.ON_LIEN_PERFECT_DAYS),
-            "90 days after the last day the lien could have been preserved", 150,
-            cite="Construction Act s.36(2)"),
+            "90 days after the last day the lien could have been preserved; ONLY if the lien was "
+            "actually preserved first (s.36(1)); a preserved lien may instead be perfected by "
+            "sheltering under another claimant's action (s.36(4))", 150,
+            cite="Construction Act s.36(2)", filing=True),
     ]
     if terminated is not None:
         out.append(_mk("ON", "publish notice of termination by", _d(terminated, R.ON_TERMINATION_NOTICE_DAYS),
@@ -249,21 +274,80 @@ def on_sub_payment(owner_paid: dt.date) -> List[Deadline]:
                 cite="Construction Act s.6.5(1)")]
 
 
-def on_annual_holdback(anniversary: dt.date) -> List[Deadline]:
-    """Ontario 2026 (contracts entered on/after Jan 1, 2026): annual holdback release."""
-    notice = _d(anniversary, R.ON_ANNUAL_NOTICE_DAYS)
-    return [
-        _mk("ON", "publish annual-release notice by", notice,
-            "notice within 14 days of each contract anniversary", 14, cite="Construction Act s.26(3)"),
-        _mk("ON", "earliest payment of accrued holdback", _d(notice, R.ON_ANNUAL_PAYMENT_MIN_DAYS),
-            "no earlier than 60 days after publication", 74, hard=False, cite="Construction Act s.26(4)"),
-        _mk("ON", "latest payment of accrued holdback", _d(notice, R.ON_ANNUAL_PAYMENT_MAX_DAYS),
-            "no later than 74 days after publication, provided no lien is preserved", 88,
-            cite="Construction Act s.26(4)"),
-        Deadline("contractor passes down (from payment)", None,
-                 "14 days after receipt — add to whichever payment date applies", 0, hard=False,
-                 cite="Construction Act s.26(5)"),
-    ]
+def on_annual_holdback(anniversary: dt.date, published: Optional[dt.date] = None) -> List[Deadline]:
+    """Ontario 2026: annual holdback release (s.26(2)-(5)).
+
+    The payment window runs from the date the owner ACTUALLY publishes the notice (s.26(4)).
+    Without `published` we can only show the outer bounds that follow if the notice goes out on
+    the last permitted day (anniversary + 14); an earlier notice moves both dates earlier.
+    """
+    last_notice = _d(anniversary, R.ON_ANNUAL_NOTICE_DAYS)
+    out = [_mk("ON", "publish annual-release notice by", last_notice,
+               "notice within 14 days of each contract anniversary", 14, cite="Construction Act s.26(3)")]
+    if published is None:
+        out += [
+            _mk("ON", "payment window opens (if notice is published on its last day)",
+                _d(last_notice, R.ON_ANNUAL_PAYMENT_MIN_DAYS),
+                "payment no earlier than 60 days after the notice is published; an earlier notice "
+                "means an earlier date - pass --published DATE for the exact window", 74, hard=False,
+                cite="Construction Act s.26(4)"),
+            _mk("ON", "latest possible payment (if notice is published on its last day)",
+                _d(last_notice, R.ON_ANNUAL_PAYMENT_MAX_DAYS),
+                "payment no later than 74 days after the notice is published, unless a lien is "
+                "preserved/perfected; an earlier notice means an earlier date", 88,
+                cite="Construction Act s.26(4)"),
+        ]
+    else:
+        late = published > last_notice
+        out += [
+            Deadline("notice actually published", published,
+                     "you reported this date" + ("; it is AFTER the 14-day limit in s.26(3) - "
+                                                  "ask counsel what follows" if late else ""),
+                     (published - anniversary).days, hard=False, cite="Construction Act s.26(3)"),
+            _mk("ON", "payment window opens", _d(published, R.ON_ANNUAL_PAYMENT_MIN_DAYS),
+                "no earlier than 60 days after publication", 60, hard=False, cite="Construction Act s.26(4)"),
+            _mk("ON", "latest payment of accrued holdback", _d(published, R.ON_ANNUAL_PAYMENT_MAX_DAYS),
+                "no later than 74 days after publication, unless a lien is preserved/perfected", 74,
+                cite="Construction Act s.26(4)"),
+        ]
+    out.append(Deadline("contractor passes down (from payment)", None,
+                        "14 days after receipt — add to whichever payment date applies", 0, hard=False,
+                        cite="Construction Act s.26(5)"))
+    return out
+
+
+def on_first_annual_anniversary(contract_date: dt.date) -> dt.date:
+    """First contract anniversary to which s.26 applies (Construction Act s.87.4(4)).
+
+    s.26 (as re-enacted) is in force 2026-01-01. A contract entered into on/after that day has an
+    annual release after each anniversary. For a contract entered into BEFORE it, para 1 makes the
+    first one "the second anniversary of the day the contract was entered into that follows" the
+    in-force day. We read that as: the second occurrence of the anniversary date after
+    2026-01-01. Counsel should confirm that reading. Improvements under s.87.3(1) are excluded.
+    """
+    if contract_date.month == 2 and contract_date.day == 29:
+        raise ValueError("contract dated Feb 29: anniversary dates are not defined by the rules we "
+                         "verified - pass the anniversary to `on-annual` yourself")
+    in_force = R.ON_S26_IN_FORCE
+    if contract_date >= in_force:
+        return dt.date(contract_date.year + 1, contract_date.month, contract_date.day)
+    y = in_force.year
+    first = dt.date(y, contract_date.month, contract_date.day)
+    if first <= in_force:
+        first = dt.date(y + 1, contract_date.month, contract_date.day)
+    return dt.date(first.year + 1, first.month, first.day)
+
+
+def on_annual_from_contract(contract_date: dt.date, published: Optional[dt.date] = None) -> List[Deadline]:
+    first = on_first_annual_anniversary(contract_date)
+    pre = contract_date < R.ON_S26_IN_FORCE
+    head = Deadline("first annual-release anniversary", first,
+                    ("contract entered before 2026-01-01: first anniversary to which s.26 applies is "
+                     "the second one after the in-force date (reading of s.87.4(4)1; confirm); that "
+                     "release must include ALL holdback accrued before it (s.87.4(4)2)") if pre else
+                    "first anniversary of a contract entered into on/after 2026-01-01",
+                    0, hard=False, cite="Construction Act s.87.4(4)" if pre else "Construction Act s.26(2)")
+    return [head] + on_annual_holdback(first, published)
 
 
 def on_adjudication(completed: dt.date, subcontract_events: Optional[List[dt.date]] = None) -> List[Deadline]:
@@ -279,4 +363,4 @@ def on_adjudication(completed: dt.date, subcontract_events: Optional[List[dt.dat
                 f"no adjudication of a {kind} if notice is given more than 90 days after the "
                 f"{'earliest of the listed dates' if subcontract_events else 'date completed, abandoned or terminated'} "
                 f"({anchor.isoformat()}), unless the parties agree otherwise", R.ON_ADJUDICATION_DAYS,
-                cite="Construction Act s.13.5(3),(3.1)")]
+                cite="Construction Act s.13.5(3),(3.1)", filing=True)]

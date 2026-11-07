@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import datetime as dt
 import hashlib
+import os
 from typing import Iterable, Optional, Tuple
 
 from .calc import Deadline
@@ -36,6 +37,12 @@ def _fold(line: str) -> str:
 def build_ics(items: Iterable[Tuple[str, str, Deadline]], stamp: Optional[dt.datetime] = None,
               alarm_days: Tuple[int, ...] = (7, 1)) -> str:
     """items: (project, command, deadline). Deadlines without a date are skipped."""
+    if stamp is None:
+        epoch = os.environ.get("SOURCE_DATE_EPOCH", "")      # reproducible builds
+        try:
+            stamp = dt.datetime.fromtimestamp(int(epoch), dt.timezone.utc).replace(tzinfo=None) if epoch.isdigit() else None
+        except (OverflowError, OSError, ValueError):
+            stamp = None
     stamp = stamp or dt.datetime.now(dt.timezone.utc).replace(tzinfo=None)
     lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//holdbackcalc//deadlines//EN",
              "CALSCALE:GREGORIAN", "METHOD:PUBLISH"]
@@ -50,6 +57,10 @@ def build_ics(items: Iterable[Tuple[str, str, Deadline]], stamp: Optional[dt.dat
         desc = f"{d.basis} [{d.cite}]" if d.cite else d.basis
         if d.rolled:
             desc += f" May roll forward to {d.rolled.isoformat()} under the holiday rule - do not rely on it."
+        if d.plan_by:
+            desc += f" Falls on a weekend/holiday: last business day to act is {d.plan_by.isoformat()}."
+        if d.closed_office:
+            desc += " Saturday filing deadline: file by the Friday; an office-closed extension may exist but do not rely on it."
         desc += " " + DISCLAIMER
         lines += ["BEGIN:VEVENT", f"UID:{uid}@holdbackcalc", f"DTSTAMP:{stamp:%Y%m%dT%H%M%SZ}",
                   f"DTSTART;VALUE=DATE:{d.date:%Y%m%d}",

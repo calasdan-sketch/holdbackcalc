@@ -2,6 +2,29 @@
 
 ## 0.2.0 (unreleased)
 
+### Review round 3 (construction lawyer, Windows AR controller, spreadsheet/attacker, calendar-interop, performance, docs/DX)
+
+Bugs found by hands-on testing and fixed:
+- `tools/verify_sources.py` reported 16 false FAILs when ontario.ca returned a script shell; short or non-statute responses are now SKIPPED with instructions (`--from-dir`).
+- `pytest -q` failed on a fresh clone (package not on the path); pytest now has `pythonpath = ["src"]`.
+- Ontario annual holdback dates were labelled "earliest/latest payment" but were anchored to the *last day* the notice may be published; they are now labelled as outer bounds, and `--published DATE` gives the exact s.26(4) window (breaking label change).
+- The Ontario "perfect lien by" row did not say that an unpreserved lien cannot be perfected (s.36(1)); it does now, and mentions sheltering (s.36(4)).
+- Legacy Windows consoles crashed on the arrow and dash characters; output now degrades to `?` and JSON falls back to ASCII escapes. `--out FILE` writes UTF-8 (PowerShell `>` writes UTF-16).
+- A CSV field over 131,072 characters produced a traceback; it is now a clean error. Duplicate CSV columns are rejected. Week-format dates such as `2026-W01-1` (accepted by newer Pythons) and non-ASCII digits are rejected.
+- `batch` rejected Excel files: semicolon-separated (French locale) and Windows-1252 / UTF-16 files now load; commands and sectors are case-insensitive. Bad dates hint at the Excel format fix.
+- `--json` and `--ics` together silently picked one; the output flags are now mutually exclusive. The `batch` positional no longer collides with a `--csv` flag.
+
+Added (all cited to the statute text read 2026-11-07):
+- `on-annual-first CONTRACT_DATE`: s.87.4(4) transition (this resolves the earlier "only a secondary source says second anniversary" gap; the wording is ambiguous and our reading is flagged for counsel). Rules `on.annual.transition_second_anniversary`, `on.annual.s26_in_force`.
+- `on-lien-events --role trustee` (workers' trust fund lien, s.31(2.1)).
+- Weekday on every date, `plan_by` (last business day to act when a deadline is on a weekend or holiday), a Saturday-filing flag citing ON Legislation Act s.89(2) / AB Interpretation Act s.22(2).
+- `--csv` (formula-injection safe), `--within N` with `--today`, `--out FILE`, stale-rules warning after 180 days (also `stale_warning` in JSON), `SOURCE_DATE_EPOCH` for reproducible `.ics` output.
+- Rules: 35 (was 30). Tests: 107 (was 74).
+
+Not built (ideas scored and left out): stable calendar UIDs that survive a corrected anchor date (would collide for two jobs with the same name); French-language output; Quebec/BC/other provinces (rules not verified); adjudication procedure deadlines; Alberta Thanksgiving treatment (not in the Interpretation Act list; proclamation-based); a web UI.
+
+### Review round 2
+
 Expert review (construction lawyer, contractor AR controller, first-time project administrator, legal-data QA engineer). Findings and fixes:
 
 - **Fixed a silent gap:** Ontario's 28/14/7/35-day prompt-payment clock was not encoded at all; only the 7-day deficiency window was. Added `on-prompt-payment`, `on-sub-payment`.

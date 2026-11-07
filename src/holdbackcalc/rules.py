@@ -6,6 +6,7 @@ official texts. We deliberately encode NOTHING we could not verify: see
 UNVERIFIED for the holes. A calculator that invents a legal deadline is worse
 than no calculator.
 """
+import datetime as _dt
 from dataclasses import dataclass
 from typing import Tuple
 
@@ -44,6 +45,7 @@ ON_INVOICE_PAYMENT_DAYS = 28          # s.6.4(1): owner pays a proper invoice wi
 ON_NOTICE_NONPAYMENT_DAYS = 14        # s.6.4(2): owner's notice of non-payment within 14 days
 ON_SUB_PAYMENT_DAYS = 7               # s.6.5(1): contractor pays subs within 7 days of receiving payment
 ON_UNPAID_PASSTHROUGH_DAYS = 35       # s.6.5(4): owner did not pay -> contractor pays subs within 35 days of giving the invoice
+ON_S26_IN_FORCE = _dt.date(2026, 1, 1)  # s.26 (re-enacted) in force date, from the Act's amendment table
 ON_TERMINATION_NOTICE_DAYS = 7        # s.31(6): publish notice of termination within 7 days of termination
 
 # --- What we could NOT verify from primary text and therefore do not compute.
@@ -54,8 +56,9 @@ UNVERIFIED = [
     "AB: base-building / partial-performance treatment and sub-subcontract holdback detail",
     "AB: detailed adjudication procedure deadlines (Alta Reg 23/2022 ss.20-30) - only the 30-day-after-final-payment filing limit is encoded",
     "ON: Saturday / closed-office extensions (Legislation Act s.89(2)) - only Sundays and statutory holidays are rolled forward",
-    "ON: workers' trust fund lien expiry (s.31(2.1)) and general-lien rules",
-    "ON: transition for contracts entered into before Jan 1, 2026 (first annual release) - only a secondary source (Cassels) says 'second anniversary'; not found in the Act's text",
+    "ON: general-lien rules; the workers' trust fund lien (s.31(2.1)) is encoded only as `--role trustee` using the date the final beneficiary worker last supplied",
+    "Both: where an office is closed on a Saturday, a filing deadline MAY extend (ON Legislation Act s.89(2); AB Interpretation Act s.22(2)) - flagged with a note on Saturday filing deadlines, never computed (we do not know your office's hours)",
+    "ON: s.87.4(4) transition (contracts entered before 2026-01-01: first annual release is the 'second anniversary ... that follows' the in-force day) IS encoded by on-annual-first, but the wording is ambiguous and our reading needs counsel; AFP project agreements (s.87.4(5)) are not modelled",
     "ON: any 'first 90 days of contract' short lien period (not found in the current Act)",
     "ON: a general 45-day pleadings deadline (not found in the current Act)",
     "Both: whether a given job is in scope (public works, pre-July-2018 Ontario contracts, Parts I.1/II.1 transition) - YOU must confirm; see `applicability`",
@@ -192,6 +195,17 @@ REGISTRY: Tuple[Rule, ...] = (
          "At least 60 days but not later than 74 days after the date on which the notice"),
     Rule("on.adjudication.days", "ON", ON_ADJUDICATION_DAYS, "days", "Construction Act s.13.5(3),(3.1)", "ON_ACT",
          "more than 90 days after the date on which the contract is completed, abandoned or terminated"),
+    Rule("on.annual.transition_second_anniversary", "ON", "second anniversary", "rule", "Construction Act s.87.4(4)1", "ON_ACT",
+         "is the second anniversary of the day the contract was entered into that follows the day on which section 26",
+         "contracts entered into before s.26 came into force; wording ambiguous"),
+    Rule("on.annual.s26_in_force", "ON", "2026-01-01", "date", "Construction Act s.26 amendment table", "ON_ACT",
+         "2024, c. 20, Sched. 4, s. 26 - 01/01/2026"),
+    Rule("on.lien.trustee_expiry", "ON", 60, "days", "Construction Act s.31(2.1)", "ON_ACT",
+         "the lien of the trustee of a workers’ trust fund on behalf of a worker or workers"),
+    Rule("ab.time.closed_office", "AB", "next open day", "rule", "Interpretation Act s.22(2)", "AB_INTERP",
+         "is not open during its regular hours of business"),
+    Rule("on.time.closed_office", "ON", "next open day", "rule", "Legislation Act, 2006 s.89(2)", "ON_LEG",
+         "expire on a day when the place for doing so is not open during its regular hours of business"),
     Rule("on.time.holiday_rollforward", "ON", "next non-holiday", "rule", "Legislation Act, 2006 s.89(1)", "ON_LEG",
          "Time limits that would otherwise expire on a holiday are extended to include the next day that is not a holiday"),
     Rule("on.time.day_counting", "ON", "first day excluded, last included", "rule", "Legislation Act, 2006 s.89(3)", "ON_LEG",
