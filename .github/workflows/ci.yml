@@ -18,7 +18,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install
-        run: pip install -e . pytest build twine
+        run: pip install -e . pytest build twine ruff
+      - name: Lint
+        run: ruff check .
       - name: Test
         run: pytest -q
       - name: CLI smoke

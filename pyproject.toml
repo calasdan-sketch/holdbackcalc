@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "holdbackcalc"
-version = "0.1.0"
+version = "0.2.0"
 description = "Prompt-payment and holdback deadline assistant for Alberta and Ontario construction work (verified rules only)"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -22,3 +22,7 @@ holdbackcalc = "holdbackcalc.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = ["E501"]

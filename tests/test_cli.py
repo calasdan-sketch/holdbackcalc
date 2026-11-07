@@ -10,7 +10,7 @@ def test_ab_invoice_json(capsys):
     assert main(["--json", "ab-invoice", "2026-01-01"]) == 0
     data = json.loads(capsys.readouterr().out)
     labels = [d["label"] for d in data["schedule"]]
-    assert any("payment due" in l for l in labels)
+    assert any("payment due" in lab for lab in labels)
     assert data["note"].startswith("administrative")
 
 
@@ -39,7 +39,7 @@ def test_ab_sub_payment_and_invoice(capsys):
 def test_what_we_dont_encode(capsys):
     assert main(["what-we-dont-encode"]) == 0
     out = capsys.readouterr().out
-    assert "AB: statutory holdback" in out
+    assert "AB: Act consolidation read" in out
     assert "https://www.ontario.ca/laws/statute/90c30" in out
 
 

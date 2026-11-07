@@ -22,8 +22,10 @@ def test_ab_invoice_hand_computed():
     table = ab_invoice(D(2026, 1, 1))
     assert by_label(table, "dispute notice by (owner)").date == D(2026, 1, 15)   # +14
     assert by_label(table, "payment due (owner → contractor)").date == D(2026, 1, 29)  # +28
-    holdback = by_label(table, "unverified: holdback release")
-    assert holdback.date is None and holdback.hard is False  # never fabricate the rule
+    # v0.2.0: the placeholder now points at the real `ab-holdback` calculation.
+    # It must stay undated: holdback runs from certificate/completion, never from an invoice date.
+    holdback = by_label(table, "holdback release: use ab-holdback")
+    assert holdback.date is None and holdback.hard is False
 
 
 def test_ab_sub_payment():
@@ -69,6 +71,8 @@ def test_unverified_list_is_nonempty_and_specific():
     assert len(UNVERIFIED) >= 4
     assert any(u.startswith("AB:") and "holdback" in u for u in UNVERIFIED)
     assert any("ON:" in u for u in UNVERIFIED)
+    # rules we DO encode must not also be listed as unverified
+    assert not any("statutory holdback percentage" in u for u in UNVERIFIED)
 
 
 def test_as_dict_roundtrip():

@@ -1,16 +1,21 @@
-"""holdbackcalc — prompt-payment and holdback deadlines, verified rules only.
+"""holdbackcalc — prompt-payment, holdback and lien deadlines, verified rules only.
 
-Not legal or financial advice: an administrative date calculator. Figures were
-verified against official sources in October 2026 (see README); confirm with
+NOT legal or financial advice: an administrative date calculator. Every rule is
+cited to a section of the official text (see `holdbackcalc rules`); confirm with
 counsel for anything that matters.
 """
 
-from .calc import Deadline, ab_invoice, ab_sub_payment, on_invoice_deficiency, on_lien, on_holdback_release, on_annual_holdback
-from .rules import RULES, UNVERIFIED
+from .calc import (
+    Deadline, ab_adjudication, ab_holdback, ab_invoice, ab_lien, ab_sub_payment,
+    on_adjudication, on_annual_holdback, on_holdback_release, on_invoice_deficiency,
+    on_lien, on_lien_events, on_prompt_payment, on_sub_payment,
+)
+from .rules import REGISTRY, RULES, UNVERIFIED
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __all__ = [
-    "Deadline", "ab_invoice", "ab_sub_payment", "on_lien", "on_holdback_release",
-    "on_invoice_deficiency", "on_annual_holdback", "RULES", "UNVERIFIED",
-    "__version__",
+    "Deadline", "ab_invoice", "ab_sub_payment", "ab_lien", "ab_holdback", "ab_adjudication",
+    "on_lien", "on_lien_events", "on_holdback_release", "on_invoice_deficiency",
+    "on_prompt_payment", "on_sub_payment", "on_annual_holdback", "on_adjudication",
+    "RULES", "REGISTRY", "UNVERIFIED", "__version__",
 ]
