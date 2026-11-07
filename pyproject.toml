@@ -1,21 +1,39 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "holdbackcalc"
 version = "0.2.0"
-description = "Prompt-payment and holdback deadline assistant for Alberta and Ontario construction work (verified rules only)"
+description = "Prompt-payment, holdback and lien deadline calculator for Alberta and Ontario construction work (every rule cited to the statute)"
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
-authors = [{ name = "calasdan-sketch" }]
-keywords = ["prompt-payment", "holdback", "construction", "lien", "alberta", "ontario", "deadlines"]
+license-files = ["LICENSE"]
+authors = [{ name = "Calas Automations Inc." }]
+keywords = ["prompt-payment", "holdback", "construction", "lien", "alberta", "ontario", "deadlines", "construction-act", "canada"]
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "Development Status :: 4 - Beta",
     "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Legal Industry",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Office/Business",
+    "Typing :: Typed",
 ]
+
+[project.urls]
+Homepage = "https://github.com/calasdan-sketch/holdbackcalc"
+Source = "https://github.com/calasdan-sketch/holdbackcalc"
+Issues = "https://github.com/calasdan-sketch/holdbackcalc/issues"
+Changelog = "https://github.com/calasdan-sketch/holdbackcalc/blob/main/CHANGELOG.md"
 
 [project.scripts]
 holdbackcalc = "holdbackcalc.cli:main"
@@ -23,9 +41,16 @@ holdbackcalc = "holdbackcalc.cli:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+holdbackcalc = ["py.typed"]
+
 [tool.ruff.lint]
 select = ["E", "F", "W"]
 ignore = ["E501"]
+
+[tool.mypy]
+ignore_missing_imports = true
+files = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

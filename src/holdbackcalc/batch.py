@@ -116,13 +116,19 @@ def _rows(reader):
 
 def read_rows(path: str) -> List[Tuple[str, str, List[Deadline]]]:
     """Parse + compute a CSV. ANY bad row aborts the whole run (no partial schedule)."""
-    if not os.path.isfile(path):
-        raise BatchError(f"not a regular file: {clean(path, 80)}")
-    try:
-        with open(path, "rb") as fh:
-            raw = fh.read(MAX_BYTES + 1)
-    except OSError as exc:
-        raise BatchError(f"cannot read {clean(path, 80)}: {exc.strerror or exc}")
+    if path == "-":                      # standard input (a file really named "-" can be given as ./-)
+        try:
+            raw = sys.stdin.buffer.read(MAX_BYTES + 1)
+        except (OSError, AttributeError, ValueError) as exc:
+            raise BatchError(f"cannot read standard input: {clean(str(exc), 80)}")
+    else:
+        if not os.path.isfile(path):
+            raise BatchError(f"not a regular file: {clean(path, 80)}")
+        try:
+            with open(path, "rb") as fh:
+                raw = fh.read(MAX_BYTES + 1)
+        except OSError as exc:
+            raise BatchError(f"cannot read {clean(path, 80)}: {exc.strerror or exc}")
     if len(raw) > MAX_BYTES:
         raise BatchError(f"file larger than {MAX_BYTES} bytes")
     text = decode_text(raw)

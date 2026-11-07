@@ -15,6 +15,13 @@ from typing import Dict, List, Optional
 from . import rules as R
 from .holidays import is_holiday, roll_forward
 
+WEEKDAYS = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")   # fixed English: strftime("%a") follows the locale
+
+
+def weekday_name(d: dt.date) -> str:
+    return WEEKDAYS[d.weekday()]
+
+
 SECTORS = ("standard", "oil-gas", "concrete")
 ROLES = ("contractor", "other", "trustee")
 
@@ -36,7 +43,7 @@ class Deadline:
                 "basis": self.basis, "days": self.days, "hard": self.hard,
                 "cite": self.cite,
                 "rolled_forward_to": self.rolled.isoformat() if self.rolled else None,
-                "weekday": self.date.strftime("%a") if self.date else None,
+                "weekday": weekday_name(self.date) if self.date else None,
                 "plan_by": self.plan_by.isoformat() if self.plan_by else None,
                 "closed_office_note": self.closed_office}
 

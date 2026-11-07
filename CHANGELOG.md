@@ -2,6 +2,21 @@
 
 ## 0.2.0 (unreleased)
 
+### Review round 4 (what a stranger who types `pip install` actually gets)
+
+Found by building the wheel and sdist, installing into clean virtualenvs (Python 3.9 and 3.13) and attacking the CLI:
+- `holdbackcalc ... | head` (or any closed pipe) printed a traceback; a full disk did too. Now silent / a one-line message. Any other unexpected error prints a short "internal error, please report" with exit status 70 instead of a traceback (`HOLDBACKCALC_DEBUG=1` shows the details). Ctrl-C exits 130.
+- `--out FILE` left an empty file behind when the run failed, so the retry said "already exists". The file is now removed on failure.
+- `--ics` on Windows would have written `CR CR LF` line endings (text-mode stdout translates the calendar's CRLF again); fixed and tested with an emulated Windows stream. Not run on real Windows.
+- `--within -5` was accepted; now an error. Weekday names no longer follow the machine's locale.
+- The README told pip users to run `python tools/verify_sources.py`, a file that is not in the wheel. It is now `holdbackcalc verify-sources` (the old script remains as a wrapper). The downloader now caps the download size, only fetches https, deletes its temporary files, says when `pdftotext` is missing, and says "this is not a pass" when nothing could be checked.
+- `python -m holdbackcalc` did not work; `on_annual_from_contract` was missing from the package's public names; no `py.typed`.
+- Packaging metadata: author now "Calas Automations Inc."; project URLs, classifiers (Python 3.9-3.13, OS independent, typed) added; `setuptools>=77` is now required because an SPDX `license = "MIT"` string needs it (older setuptools would fail to build); sdist now includes CHANGELOG.
+
+Added: `holdbackcalc verify-sources`, `batch -` (CSV from standard input), `--today today`, `schema_version` and `tool_version` in `--json` output (additive), a README "use as a library" example, tests that run every command in the README, and CI on Windows as well as Linux plus a clean-virtualenv wheel smoke test and mypy. Tests: 134 (was 107).
+
+Backward compatible: nothing removed; every JSON key from earlier rounds is unchanged.
+
 ### Review round 3 (construction lawyer, Windows AR controller, spreadsheet/attacker, calendar-interop, performance, docs/DX)
 
 Bugs found by hands-on testing and fixed:

@@ -8,8 +8,13 @@
 
 ```bash
 pip install holdbackcalc            # Python 3.9+, no dependencies
-# this branch has unreleased commands (batch, --csv, on-annual-first ...); from a clone use:  pip install .
 holdbackcalc ab-invoice 2026-06-30
+```
+
+> The version on PyPI (0.1.0) is older than this repository (0.2.0, unreleased). Until 0.2.0 is published, commands such as `batch`, `--csv`, `on-annual-first`, `on-lien-events` and `verify-sources` need a checkout: `git clone https://github.com/calasdan-sketch/holdbackcalc && pip install ./holdbackcalc`. Check what you have with `holdbackcalc --version`.
+
+```bash
+holdbackcalc --version
 ```
 
 ```
@@ -39,12 +44,16 @@ The printed date is plain arithmetic (anchor day excluded, last day included, as
 | ON | `on-invoice DATE` | 7-day proper-invoice deficiency window |
 | ON | `on-adjudication DATE [--also DATE ...]` | last day for notice of adjudication (90 days; earliest date wins for subcontracts) |
 | both | `batch jobs.csv` | many jobs at once: `project,command,date[,certificate,registered,sector]` |
+| both | `batch -` | same, reading the CSV from standard input |
 | both | `rules` | every encoded rule with citation and source URL |
+| both | `verify-sources` | re-check every rule against the official statute text (needs network) |
 | both | `what-we-dont-encode` | the holes, listed |
 
-Global flags go before the command: `--json`, `--ics` (calendar file with 7-day and 1-day alarms), `--csv` (spreadsheet-safe), `--out FILE` (UTF-8 file; use it instead of `>` in Windows PowerShell, which writes UTF-16), `--today YYYY-MM-DD` (days left, `OVERDUE`), `--within N` (with `--today`: only what is overdue or due in the next N days).
+Global flags go before the command: `--json`, `--ics` (calendar file with 7-day and 1-day alarms), `--csv` (spreadsheet-safe), `--out FILE` (UTF-8 file; use it instead of `>` in Windows PowerShell, which writes UTF-16), `--today YYYY-MM-DD` or `--today today` (days left, `OVERDUE`), `--within N` (with `--today`: only what is overdue or due in the next N days).
 
 Every date shows its weekday. A date on a weekend or holiday also shows the **last business day to act**; a Saturday filing deadline is flagged because the statutes may extend it if the office is closed (never computed, since we cannot know your office's hours). Batch CSVs may be UTF-8, UTF-16 or Excel's Windows-1252, comma- or semicolon-separated (Excel in French and other locales); dates must be `YYYY-MM-DD`. Output carries a warning once the rules are more than 180 days past their last check.
+
+Exit status: `0` success, `2` bad input (plain-English message on stderr, nothing on stdout, no traceback), `70` a bug in holdbackcalc (please report it), `130` Ctrl-C. `--json` output carries `schema_version` (currently 1) and `tool_version`. Results go to stdout, messages and warnings to stderr.
 
 ```bash
 holdbackcalc --ics batch jobs.csv > deadlines.ics         # import into Outlook / Google / Apple Calendar
@@ -58,11 +67,11 @@ holdbackcalc on-lien-events --role other --supply-before-sp \
 `holdbackcalc rules` lists 35 rules; each has a section citation, the official source URL and an "evidence phrase" that appears in that text. Re-check them yourself at any time:
 
 ```bash
-python tools/verify_sources.py    # downloads the official texts; PASS / FAIL / SKIPPED per rule
-python tools/verify_sources.py --from-dir DIR   # if a site (e.g. ontario.ca) serves a script shell: save the pages from a browser as ON_ACT.html, ON_LEG.html, AB_ACT.pdf, AB_REG.pdf, AB_INTERP.pdf
+holdbackcalc verify-sources    # downloads the official texts; PASS / FAIL / SKIPPED per rule
+holdbackcalc verify-sources --from-dir DIR   # if a site (e.g. ontario.ca) serves a script shell: save the pages from a browser as ON_ACT.html, ON_LEG.html, AB_ACT.pdf, AB_REG.pdf, AB_INTERP.pdf
 ```
 
-A rule that cannot be checked is reported SKIPPED, never PASSED; a page that is clearly not the statute (too short) is SKIPPED too, not FAILED (before this round the Ontario page produced 16 false FAILs). A FAIL means the law may have changed.
+Alberta's PDFs need the free `pdftotext` program (poppler); without it those rules are SKIPPED. On 2026-11-07 a live run from our test machine gave 15 PASS for Alberta and 20 SKIPPED for Ontario (ontario.ca served a script shell), so the Ontario texts were not re-verified in the latest review round. A rule that cannot be checked is reported SKIPPED, never PASSED; a page that is clearly not the statute (too short) is SKIPPED too, not FAILED (before this round the Ontario page produced 16 false FAILs). A FAIL means the law may have changed.
 
 Primary sources read on 2026-11-07:
 Ontario [Construction Act](https://www.ontario.ca/laws/statute/90c30) (consolidation from Jan 1, 2026) and [Legislation Act, 2006](https://www.ontario.ca/laws/statute/06l21);
@@ -88,19 +97,31 @@ Measured on this repo (re-run `python tools/bench.py`; `pytest -q`):
 | Ontario annual holdback | one anchor | exact window from the real notice date; pre-2026 transition command |
 | Holiday / weekend awareness | none | holidays rolled (both provinces), last business day to act, Saturday-filing flag |
 | Multi-job view, exports | none | `batch` (UTF-8/16, Excel, `;`), `--ics`, `--csv`, `--within`, `--out` |
-| Tests | 15 | 107 (golden dates, 2,000-date sweep, CLI fuzz, hostile CSV, Windows console, round-3 regressions) |
-| 10,000-job batch | n/a | 0.39-0.42 s here (about 24,000 jobs/s; noisy shared machine; the first draft of this README said 0.07 s, which the benchmark did not support) |
+| Tests | 15 | 134 (132 run everywhere, 2 need network) (golden dates, 2,000-date sweep, CLI fuzz, hostile CSV, Windows console emulation, README commands, packaging checks) |
+| 10,000-job batch | n/a | 0.54-0.59 s here (about 17,000-18,000 jobs/s; noisy shared machine; round 4 measured the same speed as before, so no speed claim changes) |
 
 Against other tools (all **unverified** as to features; we checked only that the pages below were reachable):
 
 | Tool | What we could check | Everything else |
 |---|---|---|
 | Procore Pay (procore.com/pay) | US-English page text (fetched 2026-11-07, no JS) mentions liens, and does not mention Alberta, Ontario, holdback or prompt payment | Canadian coverage, pricing, deadline features: unverified |
+| Osler "Owner Payment Date Calculator" (osler.com) | Ontario only; one input (date the owner received a proper invoice); three outputs (deficiency notice, notice of non-payment, payment); moves a deadline on a holiday to the next business day; page says "at your own risk" (read 2026-11-07) | Pricing and anything beyond that page: unverified. Note the difference: we print the plain-arithmetic date and show the rolled date separately |
+| BuilderLien (builderlien-landing.pages.dev) | Ontario only; paid ($99 / $199 per month listed); the page was a waitlist with a February 2026 launch when read 2026-11-07 | Whether it launched, and its accuracy: unverified |
+| Norton Rose Fulbright "PPCLA Advisor" | exists (search result 2026-11-07); we did not open it | Alberta coverage and features: unverified |
 | Textura | site not reachable from our environment | unverified |
 | Levelset / other lien-deadline calculators | the lien-deadline URLs we tried returned 404; a 2026-11-07 web search for an AB/ON lien or holdback calculator surfaced law-firm explainers and PDFs (e.g. Bennett Jones, Miller Thomson), not calculators; we did not read them in full | Alberta/Ontario coverage: unverified |
 | Law-firm calculators | not checked | unverified |
 
 We do not claim to beat any of them on features we could not inspect. What this tool offers is narrow and checkable: free, offline, open source, cited to sections, and honest about its gaps. It is not a payment platform, a document-management system or a source of legal advice.
+
+## Use as a Python library
+
+```python
+import datetime as dt
+from holdbackcalc import ab_invoice
+for d in ab_invoice(dt.date(2026, 6, 30)):
+    print(d.date, d.label, d.cite)
+```
 
 ## Notes
 

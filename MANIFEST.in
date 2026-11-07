@@ -1,0 +1,6 @@
+include LICENSE README.md CHANGELOG.md PUBLISH-CHECKLIST.md
+recursive-include docs *.md
+recursive-include tools *.py
+recursive-include tests *.py
+global-exclude __pycache__ *.py[cod]
+prune src/holdbackcalc.egg-info

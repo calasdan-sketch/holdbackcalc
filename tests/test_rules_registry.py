@@ -1,13 +1,11 @@
 """Data-QA: the registry, the constants and the calculator must agree."""
-import importlib.util
+import importlib
 import json
-import os
 import re
 
 from holdbackcalc import rules as R
 from holdbackcalc.cli import main
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def test_ids_unique_and_wellformed():
@@ -60,13 +58,12 @@ def test_rules_command_json(capsys):
 def test_rules_command_table(capsys):
     assert main(["rules"]) == 0
     out = capsys.readouterr().out
-    assert "on.lien.preserve_days" in out and "verify_sources" in out
+    assert "on.lien.preserve_days" in out and "verify-sources" in out
 
 
 def _load_tool():
-    spec = importlib.util.spec_from_file_location("verify_sources", os.path.join(ROOT, "tools", "verify_sources.py"))
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
+    import holdbackcalc.verify as mod
+    importlib.reload(mod)      # fresh module each time: tests below change MIN_CHARS
     mod.MIN_CHARS = 0          # these tests use tiny synthetic texts
     return mod
 
