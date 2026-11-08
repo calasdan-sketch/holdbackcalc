@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "tool_version": "0.2.0",
+  "schedule": [
+    {
+      "id": "preserve_lien_by",
+      "label": "preserve lien by",
+      "date": "2026-05-19",
+      "basis": "60 days after the earliest applicable event: you last supplied services/materials (2026-03-20)",
+      "days": 60,
+      "hard": true,
+      "cite": "Construction Act s.31(3)",
+      "rolled_forward_to": null,
+      "weekday": "Tue",
+      "plan_by": null,
+      "closed_office_note": false,
+      "days_left": -62
+    },
+    {
+      "id": "perfect_lien_by_commence_action",
+      "label": "perfect lien by (commence action)",
+      "date": "2026-08-17",
+      "basis": "90 days after the last day the lien could have been preserved; ONLY if the lien was actually preserved first (s.36(1)); a preserved lien may instead be perfected by sheltering under another claimant's action (s.36(4))",
+      "days": 150,
+      "hard": true,
+      "cite": "Construction Act s.36(2)",
+      "rolled_forward_to": null,
+      "weekday": "Mon",
+      "plan_by": null,
+      "closed_office_note": false,
+      "days_left": 28
+    },
+    {
+      "id": "publish_notice_of_termination_by",
+      "label": "publish notice of termination by",
+      "date": "2026-03-08",
+      "basis": "owner or contractor must publish a notice of termination within 7 days; the termination date for s.31 is the date the first notice is published",
+      "days": 7,
+      "hard": true,
+      "cite": "Construction Act s.31(6),(7)",
+      "rolled_forward_to": "2026-03-09",
+      "weekday": "Sun",
+      "plan_by": "2026-03-06",
+      "closed_office_note": false,
+      "days_left": -134
+    },
+    {
+      "id": "events_not_supplied_could_make_it_earlier",
+      "label": "events not supplied (could make it EARLIER)",
+      "date": null,
+      "basis": "subcontract certified complete",
+      "days": 0,
+      "hard": false,
+      "cite": "Construction Act s.31(3)",
+      "rolled_forward_to": null,
+      "weekday": null,
+      "plan_by": null,
+      "closed_office_note": false,
+      "days_left": null
+    }
+  ],
+  "note": "administrative reminders, not legal advice",
+  "disclaimer": "Administrative reminder, not legal advice - verify with counsel.",
+  "applicability": [
+    "Contracts/procurements that started before July 1, 2018 stay under the old Act (Construction Act s.87.3(1)).",
+    "Prompt-payment and adjudication Parts do not apply to contracts entered into before Oct 1, 2019 (Construction Act s.87.3(4))."
+  ],
+  "rules_read_on": "2026-11-07",
+  "stale_warning": null
+}

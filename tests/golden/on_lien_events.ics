@@ -1,0 +1,75 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Calas Automations Inc.//holdbackcalc deadlines//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:holdbackcalc deadlines
+BEGIN:VEVENT
+UID:1df595cd016fd9e1aa590918@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260519
+DTEND;VALUE=DATE:20260520
+SUMMARY:preserve lien by
+DESCRIPTION:60 days after the earliest applicable event: you last supplied 
+ services/materials (2026-03-20) [Construction Act s.31(3)] Administrative 
+ reminder\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:preserve lien by
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:preserve lien by
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:49a18c4ab6dad6ea385b1983@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260817
+DTEND;VALUE=DATE:20260818
+SUMMARY:perfect lien by (commence action)
+DESCRIPTION:90 days after the last day the lien could have been preserved\;
+  ONLY if the lien was actually preserved first (s.36(1))\; a preserved lie
+ n may instead be perfected by sheltering under another claimant's action (
+ s.36(4)) [Construction Act s.36(2)] Administrative reminder\, not legal ad
+ vice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:perfect lien by (commence action)
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:perfect lien by (commence action)
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:8d2d190cf6691b8578f9f9c2@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260308
+DTEND;VALUE=DATE:20260309
+SUMMARY:publish notice of termination by
+DESCRIPTION:owner or contractor must publish a notice of termination within
+  7 days\; the termination date for s.31 is the date the first notice is pu
+ blished [Construction Act s.31(6)\,(7)] May roll forward to 2026-03-09 und
+ er the holiday rule - do not rely on it. Falls on a weekend/holiday: last 
+ business day to act is 2026-03-06. Administrative reminder\, not legal adv
+ ice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:publish notice of termination by
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:publish notice of termination by
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+END:VCALENDAR

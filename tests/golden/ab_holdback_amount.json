@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "tool_version": "0.2.0",
+  "schedule": [
+    {
+      "id": "major_lien_fund_retention_safe_payment_date",
+      "label": "major lien fund: retention/safe-payment date",
+      "date": "2026-07-31",
+      "basis": "10% retained for 60 days from the certificate of substantial performance; payment may validly be made after that if no lien is registered",
+      "days": 60,
+      "hard": true,
+      "cite": "PPCLA ss.18(1), 27(2)(a)",
+      "rolled_forward_to": null,
+      "weekday": "Fri",
+      "plan_by": null,
+      "closed_office_note": false,
+      "days_left": 11
+    },
+    {
+      "id": "minor_lien_fund_retention_safe_payment_date",
+      "label": "minor lien fund: retention/safe-payment date",
+      "date": "2026-10-31",
+      "basis": "10% of post-certificate work retained for 60 days from completion",
+      "days": 60,
+      "hard": true,
+      "cite": "PPCLA ss.23(1), 27(2)(b)",
+      "rolled_forward_to": null,
+      "weekday": "Sat",
+      "plan_by": "2026-10-30",
+      "closed_office_note": false,
+      "days_left": 103
+    },
+    {
+      "id": "annual_phased_holdback_payment",
+      "label": "annual/phased holdback payment",
+      "date": null,
+      "basis": "an owner MUST pay holdback early only if the contract provides annual/phased payment, the price exceeds $10,000,000, and no liens are filed - not computed",
+      "days": 0,
+      "hard": false,
+      "cite": "PPCLA s.24.1; Alta Reg 23/2022 s.2",
+      "rolled_forward_to": null,
+      "weekday": null,
+      "plan_by": null,
+      "closed_office_note": false,
+      "days_left": null
+    },
+    {
+      "id": "holdback_to_retain_amount_not_a_date",
+      "label": "holdback to retain (amount, not a date)",
+      "date": null,
+      "basis": "CAD 125,000.50 x 10% = CAD 12,500.05 retained. The statute applies the rate to the value of the work actually done; you chose the base (check with your accountant or lawyer whether tax is in it). Rounded half-up to the cent (the rounding rule is not stated in the text we read - unverified).",
+      "days": 0,
+      "hard": false,
+      "cite": "PPCLA ss.18(1), 23(1)",
+      "rolled_forward_to": null,
+      "weekday": null,
+      "plan_by": null,
+      "closed_office_note": false,
+      "days_left": null
+    }
+  ],
+  "note": "administrative reminders, not legal advice",
+  "disclaimer": "Administrative reminder, not legal advice - verify with counsel.",
+  "applicability": [
+    "Alberta government (Public Works Act) contracts are outside the PPCLA payment timelines (alberta.ca prompt-payment page).",
+    "Contracts that pre-date the Aug 29, 2022 start of the new rules may follow the old Act (alberta.ca prompt-payment page)."
+  ],
+  "rules_read_on": "2026-11-07",
+  "stale_warning": null
+}

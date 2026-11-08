@@ -1,0 +1,51 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Calas Automations Inc.//holdbackcalc deadlines//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:holdbackcalc deadlines
+BEGIN:VEVENT
+UID:d9944de86ac1136fcb1767cd@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260731
+DTEND;VALUE=DATE:20260801
+SUMMARY:major lien fund: retention/safe-payment date
+DESCRIPTION:10% retained for 60 days from the certificate of substantial pe
+ rformance\; payment may validly be made after that if no lien is registere
+ d [PPCLA ss.18(1)\, 27(2)(a)] Administrative reminder\, not legal advice -
+  verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:major lien fund: retention/safe-payment date
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:major lien fund: retention/safe-payment date
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2717f2c9b9c76d531a242280@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20261031
+DTEND;VALUE=DATE:20261101
+SUMMARY:minor lien fund: retention/safe-payment date
+DESCRIPTION:10% of post-certificate work retained for 60 days from completi
+ on [PPCLA ss.23(1)\, 27(2)(b)] Falls on a weekend/holiday: last business d
+ ay to act is 2026-10-30. Administrative reminder\, not legal advice - veri
+ fy with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:minor lien fund: retention/safe-payment date
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:minor lien fund: retention/safe-payment date
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+END:VCALENDAR

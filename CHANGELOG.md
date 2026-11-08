@@ -2,6 +2,17 @@
 
 ## 0.2.0 (unreleased)
 
+### Review round 5 (construction lawyer, project accountant, GC administrator, calendar interoperability, test methodology)
+
+- Author: LICENSE said the GitHub handle; now "Copyright (c) 2026 Calas Automations Inc."; `maintainers` added; `__author__`; calendar PRODID names the company. Pinned by tests, and a built wheel's METADATA is checked.
+- Bug: `--json`/`--ics`/`--csv` with `--within` and nothing due printed a plain sentence on stdout, breaking parsers. The sentence now goes to stderr and the document is valid but empty.
+- Bug: the same job twice in a batch gave duplicate calendar UIDs (invalid). Repeats are now written once.
+- Fail closed: `verify-sources` exited 0 when nothing could be checked; now exits 3.
+- Added: `--amount DOLLARS` on `ab-holdback` / `on-holdback` (the 10% in dollars, Decimal arithmetic, strict input); stable `id` on every JSON row (additive); `X-WR-CALNAME` in the calendar file.
+- Tests: golden files for text/JSON/CSV/calendar, mutation-style checks that every rule number is pinned (this found `ab-lien` for standard jobs was not pinned by any golden vector; added), seeded property tests, differential tests (independent ordinal arithmetic; `dateutil`/`holidays` if installed), strict calendar parser, hand-known holiday vectors including the Alberta Dec 26/27 rule re-read from the Interpretation Act on 2026-11-08. 223 tests (was 134).
+- Upgrade from 0.1.0 checked by running the real 0.1.0 wheel: every command and JSON key still exists; only `ab-invoice` gained a row and `on-annual` row labels changed (already noted in round 3).
+- Version stays 0.2.0 (not yet on PyPI).
+
 ### Review round 4 (what a stranger who types `pip install` actually gets)
 
 Found by building the wheel and sdist, installing into clean virtualenvs (Python 3.9 and 3.13) and attacking the CLI:

@@ -1,0 +1,590 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Calas Automations Inc.//holdbackcalc deadlines//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:holdbackcalc deadlines
+BEGIN:VEVENT
+UID:860602171ba5b55adcffd4cf@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260315
+DTEND;VALUE=DATE:20260316
+SUMMARY:Job K: publish annual-release notice by
+DESCRIPTION:notice within 14 days of each contract anniversary [Constructio
+ n Act s.26(3)] May roll forward to 2026-03-16 under the holiday rule - do 
+ not rely on it. Falls on a weekend/holiday: last business day to act is 20
+ 26-03-13. Administrative reminder\, not legal advice - verify with counsel
+ .
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job K: publish annual-release notice by
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job K: publish annual-release notice by
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:edb1154c8fe43013f51a9439@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260514
+DTEND;VALUE=DATE:20260515
+SUMMARY:Reminder - Job K: payment window opens (if notice is published on i
+ ts last day)
+DESCRIPTION:payment no earlier than 60 days after the notice is published\;
+  an earlier notice means an earlier date - pass --published DATE for the e
+ xact window [Construction Act s.26(4)] Administrative reminder\, not legal
+  advice - verify with counsel.
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:d5344b67dbda510206bb4aaa@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260528
+DTEND;VALUE=DATE:20260529
+SUMMARY:Job K: latest possible payment (if notice is published on its last 
+ day)
+DESCRIPTION:payment no later than 74 days after the notice is published\, u
+ nless a lien is preserved/perfected\; an earlier notice means an earlier d
+ ate [Construction Act s.26(4)] Administrative reminder\, not legal advice 
+ - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job K: latest possible payment (if notice is published on its l
+ ast day)
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job K: latest possible payment (if notice is published on its l
+ ast day)
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:b2cbf7e1dc1efb4fd9ddaf41@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260531
+DTEND;VALUE=DATE:20260601
+SUMMARY:Job F: preserve lien by
+DESCRIPTION:lien must be preserved within 60 days of the trigger event [Con
+ struction Act s.31] May roll forward to 2026-06-01 under the holiday rule 
+ - do not rely on it. Falls on a weekend/holiday: last business day to act 
+ is 2026-05-29. Administrative reminder\, not legal advice - verify with co
+ unsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job F: preserve lien by
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job F: preserve lien by
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:f13aed270c9a66385bfa2cca@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260708
+DTEND;VALUE=DATE:20260709
+SUMMARY:Job B: payment due (contractor → sub)
+DESCRIPTION:contractor pays the subcontractor within 7 calendar days after 
+ receiving the owner's payment [PPCLA s.32.3(1)] Administrative reminder\, 
+ not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job B: payment due (contractor → sub)
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job B: payment due (contractor → sub)
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:348acd59562f5071fe2a0027@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260714
+DTEND;VALUE=DATE:20260715
+SUMMARY:Job A: dispute notice by (owner)
+DESCRIPTION:owner must give notice of dispute within 14 calendar days of re
+ ceipt [PPCLA s.32.2(2)] Administrative reminder\, not legal advice - verif
+ y with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job A: dispute notice by (owner)
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job A: dispute notice by (owner)
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:bcce63c222962b02b2c83933@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260714
+DTEND;VALUE=DATE:20260715
+SUMMARY:Job G: lien period expires
+DESCRIPTION:60-day preservation period [Construction Act s.31] Administrati
+ ve reminder\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job G: lien period expires
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job G: lien period expires
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:c198062349c7a04488c1d7d0@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260722
+DTEND;VALUE=DATE:20260723
+SUMMARY:Job I: deficiency notice window closes
+DESCRIPTION:invoice is deemed proper unless the owner gives written notice 
+ of deficiency within 7 days [Construction Act s.6.1(2)] Administrative rem
+ inder\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job I: deficiency notice window closes
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job I: deficiency notice window closes
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2ca3b5420862b1d8c6c20ce8@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260728
+DTEND;VALUE=DATE:20260729
+SUMMARY:Job A: payment due (owner → contractor)
+DESCRIPTION:proper invoice payable within 28 calendar days [PPCLA s.32.2(1)
+ ] Administrative reminder\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job A: payment due (owner → contractor)
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job A: payment due (owner → contractor)
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:6c8e3c6079971f107d69039c@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260728
+DTEND;VALUE=DATE:20260729
+SUMMARY:Job G: owner must pay contractor (holdback)
+DESCRIPTION:lien period (60) + owner has 14 days to pay after expiry — up
+  to 74 days from the event with no preserved lien [Construction Act s.26(8
+ )] Administrative reminder\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job G: owner must pay contractor (holdback)
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job G: owner must pay contractor (holdback)
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:bfcfad7c1a5f56c3e9acd64c@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260729
+DTEND;VALUE=DATE:20260730
+SUMMARY:Job I: owner's notice of non-payment by
+DESCRIPTION:owner may withhold only if it gives the prescribed notice of no
+ n-payment within 14 days [Construction Act s.6.4(2)] Administrative remind
+ er\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job I: owner's notice of non-payment by
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job I: owner's notice of non-payment by
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:1d9c7c60b509903d3d6f1883@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260804
+DTEND;VALUE=DATE:20260805
+SUMMARY:Reminder - Job A: contractor pays subs if owner has not paid
+DESCRIPTION:if the owner has not paid\, the contractor must still pay subs 
+ within 35 days of giving the invoice\, unless it sends the s.32.3(5)/(6) n
+ otices [PPCLA s.32.3(4)] Administrative reminder\, not legal advice - veri
+ fy with counsel.
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:6324a3d1c62ece2e1edeea03@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260811
+DTEND;VALUE=DATE:20260812
+SUMMARY:Reminder - Job G: contractor passes down (if paid on the due date)
+DESCRIPTION:14 days after receipt to pay downstream parties [Construction A
+ ct s.26(8)] Administrative reminder\, not legal advice - verify with couns
+ el.
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:d75ca4ea8bbcfc3215f9040a@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260812
+DTEND;VALUE=DATE:20260813
+SUMMARY:Job I: payment due (owner → contractor)
+DESCRIPTION:proper invoice payable within 28 days [Construction Act s.6.4(1
+ )] Administrative reminder\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job I: payment due (owner → contractor)
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job I: payment due (owner → contractor)
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2d59c2b09996cb712e5afe36@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260813
+DTEND;VALUE=DATE:20260814
+SUMMARY:Job M: notice of adjudication by
+DESCRIPTION:no adjudication of a contract if notice is given more than 90 d
+ ays after the date completed\, abandoned or terminated (2026-05-15)\, unle
+ ss the parties agree otherwise [Construction Act s.13.5(3)\,(3.1)] Adminis
+ trative reminder\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job M: notice of adjudication by
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job M: notice of adjudication by
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:92dbfc66412f67aae9296339@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260819
+DTEND;VALUE=DATE:20260820
+SUMMARY:Reminder - Job I: contractor pays subs if owner has not paid
+DESCRIPTION:if the owner has not paid\, the contractor must still pay subs 
+ within 35 days of giving the invoice\, unless it sends the s.6.5(5)/(6) no
+ tices [Construction Act s.6.5(4)] Administrative reminder\, not legal advi
+ ce - verify with counsel.
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:0468409067c39676075b7375@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260829
+DTEND;VALUE=DATE:20260830
+SUMMARY:Job F: perfect lien by (commence action)
+DESCRIPTION:90 days to commence the action\, running from the last day the 
+ lien could have been preserved\; ONLY if the lien was actually preserved f
+ irst (s.36(1)) - a missed preservation date cannot be cured by this one [C
+ onstruction Act s.36(2)] Falls on a weekend/holiday: last business day to 
+ act is 2026-08-28. Saturday filing deadline: file by the Friday\; an offic
+ e-closed extension may exist but do not rely on it. Administrative reminde
+ r\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job F: perfect lien by (commence action)
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job F: perfect lien by (commence action)
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:c24e62b3b69ed488bb84e08b@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260830
+DTEND;VALUE=DATE:20260831
+SUMMARY:Job D: major lien fund: retention/safe-payment date
+DESCRIPTION:10% retained for 90 days from the certificate of substantial pe
+ rformance\; payment may validly be made after that if no lien is registere
+ d [PPCLA ss.18(1)\, 27(2)(a)] May roll forward to 2026-08-31 under the hol
+ iday rule - do not rely on it. Falls on a weekend/holiday: last business d
+ ay to act is 2026-08-28. Administrative reminder\, not legal advice - veri
+ fy with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job D: major lien fund: retention/safe-payment date
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job D: major lien fund: retention/safe-payment date
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:463eb5c69e57f802cfcccbdc@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260930
+DTEND;VALUE=DATE:20261001
+SUMMARY:Job E: notice of adjudication by
+DESCRIPTION:no adjudication if notice is given more than 30 days after the 
+ date of final payment (unless the parties agree otherwise) [PPCLA s.33.4(2
+ )] Administrative reminder\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job E: notice of adjudication by
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job E: notice of adjudication by
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:eed01a0e9eaf8300e82c07bb@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20261130
+DTEND;VALUE=DATE:20261201
+SUMMARY:Job D: minor lien fund: retention/safe-payment date
+DESCRIPTION:10% of post-certificate work retained for 90 days from completi
+ on [PPCLA ss.23(1)\, 27(2)(b)] Administrative reminder\, not legal advice 
+ - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job D: minor lien fund: retention/safe-payment date
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job D: minor lien fund: retention/safe-payment date
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:49d04eb925eaac28333bf4aa@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20261214
+DTEND;VALUE=DATE:20261215
+SUMMARY:Job C0: register lien by
+DESCRIPTION:register the lien within 60 days of the last materials/services
+  supplied\, or of completion or abandonment of the contract/subcontract [P
+ PCLA s.41] Administrative reminder\, not legal advice - verify with counse
+ l.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job C0: register lien by
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job C0: register lien by
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:17c3bc1a441d2929c6f308ca@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20261225
+DTEND;VALUE=DATE:20261226
+SUMMARY:Job H: deficiency notice window closes
+DESCRIPTION:invoice is deemed proper unless the owner gives written notice 
+ of deficiency within 7 days [Construction Act s.6.1(2)] May roll forward t
+ o 2026-12-28 under the holiday rule - do not rely on it. Falls on a weeken
+ d/holiday: last business day to act is 2026-12-24. Administrative reminder
+ \, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job H: deficiency notice window closes
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job H: deficiency notice window closes
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:206019050809a0c2f246f3e9@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+SUMMARY:Job J: payment due (contractor → sub)
+DESCRIPTION:contractor pays each subcontractor within 7 days after receivin
+ g payment [Construction Act s.6.5(1)] Administrative reminder\, not legal 
+ advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job J: payment due (contractor → sub)
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job J: payment due (contractor → sub)
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:e6c4168cc2f9fcea7d9a9dc9@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20270113
+DTEND;VALUE=DATE:20270114
+SUMMARY:Job C: register lien by
+DESCRIPTION:register the lien within 90 days of the last materials/services
+  supplied\, or of completion or abandonment of the contract/subcontract [P
+ PCLA s.41] Administrative reminder\, not legal advice - verify with counse
+ l.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job C: register lien by
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job C: register lien by
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:1425bf4b811762dd0a48b52d@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20270530
+DTEND;VALUE=DATE:20270531
+SUMMARY:Job C: commence action + register lis pendens by
+DESCRIPTION:the registered lien ceases to exist unless an action is started
+  and a certificate of lis pendens registered within 180 days of registrati
+ on [PPCLA s.43(1)] May roll forward to 2027-05-31 under the holiday rule -
+  do not rely on it. Falls on a weekend/holiday: last business day to act i
+ s 2027-05-28. Administrative reminder\, not legal advice - verify with cou
+ nsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job C: commence action + register lis pendens by
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job C: commence action + register lis pendens by
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:b376f632ef920924cca5aa5c@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20270615
+DTEND;VALUE=DATE:20270616
+SUMMARY:Reminder - Job L: first annual-release anniversary
+DESCRIPTION:contract entered before 2026-01-01: first anniversary to which 
+ s.26 applies is the second one after the in-force date (reading of s.87.4(
+ 4)1\; confirm)\; that release must include ALL holdback accrued before it 
+ (s.87.4(4)2) [Construction Act s.87.4(4)] Administrative reminder\, not le
+ gal advice - verify with counsel.
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:52028e8abe9ceb9ee076c6c8@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20270629
+DTEND;VALUE=DATE:20270630
+SUMMARY:Job L: publish annual-release notice by
+DESCRIPTION:notice within 14 days of each contract anniversary [Constructio
+ n Act s.26(3)] Administrative reminder\, not legal advice - verify with co
+ unsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job L: publish annual-release notice by
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job L: publish annual-release notice by
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:fada68181107adfde4012c02@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20270828
+DTEND;VALUE=DATE:20270829
+SUMMARY:Reminder - Job L: payment window opens (if notice is published on i
+ ts last day)
+DESCRIPTION:payment no earlier than 60 days after the notice is published\;
+  an earlier notice means an earlier date - pass --published DATE for the e
+ xact window [Construction Act s.26(4)] Falls on a weekend/holiday: last bu
+ siness day to act is 2027-08-27. Administrative reminder\, not legal advic
+ e - verify with counsel.
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:436b1f5352708b6138b4babe@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20270911
+DTEND;VALUE=DATE:20270912
+SUMMARY:Job L: latest possible payment (if notice is published on its last 
+ day)
+DESCRIPTION:payment no later than 74 days after the notice is published\, u
+ nless a lien is preserved/perfected\; an earlier notice means an earlier d
+ ate [Construction Act s.26(4)] Falls on a weekend/holiday: last business d
+ ay to act is 2027-09-10. Administrative reminder\, not legal advice - veri
+ fy with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job L: latest possible payment (if notice is published on its l
+ ast day)
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Job L: latest possible payment (if notice is published on its l
+ ast day)
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+END:VCALENDAR

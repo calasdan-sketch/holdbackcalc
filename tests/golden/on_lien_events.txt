@@ -1,0 +1,12 @@
+preserve lien by                             2026-05-19 Tue  OVERDUE 62d   60 days after the earliest applicable event: you last supplied services/materials (2026-03-20)  [Construction Act s.31(3)]
+perfect lien by (commence action)            2026-08-17 Mon  in 28d        90 days after the last day the lien could have been preserved; ONLY if the lien was actually preserved first (s.36(1)); a preserved lien may instead be perfected by sheltering under another claimant's action (s.36(4))  [Construction Act s.36(2)]
+publish notice of termination by             2026-03-08 Sun  OVERDUE 134d  owner or contractor must publish a notice of termination within 7 days; the termination date for s.31 is the date the first notice is published  [Construction Act s.31(6),(7)]
+    note: that day is a Sunday/holiday; the statute may allow 2026-03-09 - plan to the earlier date
+    note: falls on a weekend/holiday - last business day to act is 2026-03-06 (Fri)
+events not supplied (could make it EARLIER)           —                    subcontract certified complete  [Construction Act s.31(3)]
+
+Check scope before relying on this:
+  - Contracts/procurements that started before July 1, 2018 stay under the old Act (Construction Act s.87.3(1)).
+  - Prompt-payment and adjudication Parts do not apply to contracts entered into before Oct 1, 2019 (Construction Act s.87.3(4)).
+
+Administrative reminders, not legal advice — verify anything that matters.

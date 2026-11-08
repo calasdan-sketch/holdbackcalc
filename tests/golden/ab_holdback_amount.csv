@@ -1,0 +1,5 @@
+project,command,label,date,weekday,plan_by,days_left,hard,cite,basis
+,ab-holdback,major lien fund: retention/safe-payment date,2026-07-31,Fri,,11,yes,"PPCLA ss.18(1), 27(2)(a)",10% retained for 60 days from the certificate of substantial performance; payment may validly be made after that if no lien is registered
+,ab-holdback,minor lien fund: retention/safe-payment date,2026-10-31,Sat,2026-10-30,103,yes,"PPCLA ss.23(1), 27(2)(b)",10% of post-certificate work retained for 60 days from completion
+,ab-holdback,annual/phased holdback payment,,,,,no,PPCLA s.24.1; Alta Reg 23/2022 s.2,"an owner MUST pay holdback early only if the contract provides annual/phased payment, the price exceeds $10,000,000, and no liens are filed - not computed"
+,ab-holdback,"holdback to retain (amount, not a date)",,,,,no,"PPCLA ss.18(1), 23(1)","CAD 125,000.50 x 10% = CAD 12,500.05 retained. The statute applies the rate to the value of the work actually done; you chose the base (check with your accountant or lawyer whether tax is in it). Rounded half-up to the cent (the rounding rule is not stated in the text we read - unverified)."

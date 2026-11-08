@@ -7,7 +7,9 @@ import csv
 import datetime as dt
 import json
 import os
+import re
 import sys
+from decimal import Decimal
 from typing import Optional
 
 from . import __version__, batch as batchmod, calc
@@ -47,6 +49,18 @@ def _nonneg_int(text: str) -> int:
     if n < 0:
         raise argparse.ArgumentTypeError("must be 0 or more")
     return n
+
+
+_MONEY_RE = re.compile(r"[0-9]{1,13}(\.[0-9]{1,2})?")
+
+
+def _money(text: str) -> Decimal:
+    """Dollars, plain digits with at most 2 decimals (no $, no thousands commas, no exponent)."""
+    t = text.strip()
+    if not _MONEY_RE.fullmatch(t):
+        raise argparse.ArgumentTypeError(
+            f"expected dollars like 125000 or 125000.50 (digits only, at most 2 decimals), got {clean(text, 30)!r}")
+    return Decimal(t)
 
 
 def _sector(ap):
@@ -104,8 +118,12 @@ def _emit(items, args, cmd: str) -> int:
         items = [t for t in items if t[2].date is not None and (t[2].date - today).days <= args.within
                  and (t[2].hard or t[2].date >= today)]
         if not items:
-            print(f"Nothing due or overdue within {args.within} days of {today.isoformat()}.")
-            return 0
+            msg = f"Nothing due or overdue within {args.within} days of {today.isoformat()}."
+            if args.json or args.ics or args.csv:     # keep machine formats parseable: say it on stderr
+                print(msg, file=sys.stderr)
+            else:
+                print(msg)
+                return 0
     if args.csv:
         w = csv.writer(sys.stdout, lineterminator="\n")
         w.writerow(["project", "command", "label", "date", "weekday", "plan_by", "days_left", "hard", "cite", "basis"])
@@ -135,7 +153,7 @@ def _emit(items, args, cmd: str) -> int:
                           "rules_read_on": READ_ON, "stale_warning": _stale_note(today) or None}, indent=2, ensure_ascii=_ascii_only()))
         return 0
     has_proj = any(p for p, _c, _d in items)
-    lw = max(len(d.label) for _p, _c, d in items)
+    lw = max((len(d.label) for _p, _c, d in items), default=0)
     pw = max((len(p) for p, _c, _d in items), default=0)
     for p, c, d in items:
         date_s = d.date.isoformat() if d.date else "—"
@@ -233,6 +251,8 @@ def _main(argv: list[str] | None = None) -> int:
     abh = sub.add_parser("ab-holdback", help="Alberta: 10%% holdback retention / safe-payment dates")
     abh.add_argument("completed", type=_date, help="date the contract was completed")
     abh.add_argument("--certificate", type=_date, help="date the certificate of substantial performance was issued")
+    abh.add_argument("--amount", type=_money, metavar="DOLLARS",
+                     help="value of the work done: also print the 10%% to retain (rounded to the cent)")
     _sector(abh)
 
     aba = sub.add_parser("ab-adjudication", help="Alberta: last day for a notice of adjudication")
@@ -254,6 +274,8 @@ def _main(argv: list[str] | None = None) -> int:
 
     onh = sub.add_parser("on-holdback", help="Ontario: 10%% holdback release schedule from an event")
     onh.add_argument("trigger", type=_date)
+    onh.add_argument("--amount", type=_money, metavar="DOLLARS",
+                     help="price of the services/materials: also print the 10%% to retain (rounded to the cent)")
 
     oni = sub.add_parser("on-invoice", help="Ontario: proper-invoice deficiency window (2026 rules)")
     oni.add_argument("received", type=_date)
@@ -364,6 +386,9 @@ def _dispatch(args) -> int:
     except (ValueError, batchmod.BatchError) as exc:
         print(f"holdbackcalc: error: {clean(str(exc), 300)}", file=sys.stderr)
         return EXIT_USAGE
+    amount = getattr(args, "amount", None)
+    if amount is not None:
+        dl = list(dl) + [calc.holdback_amount("AB" if args.cmd.startswith("ab-") else "ON", amount)]
     return _emit([("", args.cmd, d) for d in dl], args, args.cmd)
 
 

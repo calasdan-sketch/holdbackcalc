@@ -33,13 +33,13 @@ The printed date is plain arithmetic (anchor day excluded, last day included, as
 | AB | `ab-invoice DATE` | owner dispute notice (+14), payment due (+28), contractor pass-through if owner has not paid (+35) |
 | AB | `ab-sub-payment DATE` | contractor pays sub (+7 from owner's payment) |
 | AB | `ab-lien DATE [--sector oil-gas\|concrete] [--registered DATE]` | register lien (+60, or +90 for oil/gas wells and concrete); with `--registered`, the 180-day action + lis pendens deadline |
-| AB | `ab-holdback COMPLETED [--certificate DATE] [--sector ...]` | 10% major/minor lien fund retention and earliest safe-payment dates |
+| AB | `ab-holdback COMPLETED [--certificate DATE] [--sector ...] [--amount DOLLARS]` | 10% major/minor lien fund retention and earliest safe-payment dates; with `--amount`, also the 10% in dollars (rounded to the cent) |
 | AB | `ab-adjudication DATE` | last day to give notice of adjudication (30 days after final payment) |
 | ON | `on-prompt-payment DATE` | deficiency notice (+7), owner's notice of non-payment (+14), payment (+28), pass-through (+35) |
 | ON | `on-sub-payment DATE` | contractor pays subs (+7) |
 | ON | `on-lien-events --role contractor\|other\|trustee ...` | s.31 lien expiry from the **earliest applicable event** (certificate published, completion, last supply, subcontract certified), then the 90-day perfection date |
 | ON | `on-lien DATE` | simple form: one trigger event, +60 then +90 |
-| ON | `on-holdback DATE` / `on-annual DATE [--published DATE]` | holdback release after the lien period; annual release (2026 rules), exact window once you know the notice date |
+| ON | `on-holdback DATE [--amount DOLLARS]` / `on-annual DATE [--published DATE]` | holdback release after the lien period; annual release (2026 rules), exact window once you know the notice date |
 | ON | `on-annual-first CONTRACT_DATE` | first annual release for a contract, including the pre-2026 transition (s.87.4(4); our reading needs counsel) |
 | ON | `on-invoice DATE` | 7-day proper-invoice deficiency window |
 | ON | `on-adjudication DATE [--also DATE ...]` | last day for notice of adjudication (90 days; earliest date wins for subcontracts) |
@@ -53,10 +53,12 @@ Global flags go before the command: `--json`, `--ics` (calendar file with 7-day 
 
 Every date shows its weekday. A date on a weekend or holiday also shows the **last business day to act**; a Saturday filing deadline is flagged because the statutes may extend it if the office is closed (never computed, since we cannot know your office's hours). Batch CSVs may be UTF-8, UTF-16 or Excel's Windows-1252, comma- or semicolon-separated (Excel in French and other locales); dates must be `YYYY-MM-DD`. Output carries a warning once the rules are more than 180 days past their last check.
 
-Exit status: `0` success, `2` bad input (plain-English message on stderr, nothing on stdout, no traceback), `70` a bug in holdbackcalc (please report it), `130` Ctrl-C. `--json` output carries `schema_version` (currently 1) and `tool_version`. Results go to stdout, messages and warnings to stderr.
+`--amount` takes plain digits with at most two decimals (`125000.50`); the 10% is applied to the number you give (Alberta: value of the work actually done, PPCLA s.18(1); Ontario: price of the services or materials, Construction Act s.22(1)). You choose the base, for example whether GST/HST is in it; ask your accountant. Rounding is half-up to the cent (the texts we read do not state a rounding rule: unverified).
+
+Exit status: `0` success, `2` bad input (plain-English message on stderr, nothing on stdout, no traceback), `70` a bug in holdbackcalc (please report it), `130` Ctrl-C. `verify-sources` exits `1` if a rule's text is not found and `3` if nothing could be checked at all (never a silent pass). `--json` output carries `schema_version` (currently 1), `tool_version`, and every schedule row has a stable `id` (a slug of the label; key scripts on it, because labels may be reworded). With `--within`, an empty result stays valid JSON / calendar / CSV and the "nothing due" message goes to stderr. Results go to stdout, messages and warnings to stderr.
 
 ```bash
-holdbackcalc --ics batch jobs.csv > deadlines.ics         # import into Outlook / Google / Apple Calendar
+holdbackcalc --ics batch jobs.csv > deadlines.ics         # import into Outlook / Google / Apple Calendar (all-day events; some calendar apps ignore imported reminders: not tested here)
 holdbackcalc --today 2026-07-20 batch jobs.csv            # what is due or overdue, across all jobs
 holdbackcalc on-lien-events --role other --supply-before-sp \
   --cert-published 2026-04-01 --completed 2026-05-15 --last-supply 2026-03-20
@@ -97,22 +99,26 @@ Measured on this repo (re-run `python tools/bench.py`; `pytest -q`):
 | Ontario annual holdback | one anchor | exact window from the real notice date; pre-2026 transition command |
 | Holiday / weekend awareness | none | holidays rolled (both provinces), last business day to act, Saturday-filing flag |
 | Multi-job view, exports | none | `batch` (UTF-8/16, Excel, `;`), `--ics`, `--csv`, `--within`, `--out` |
-| Tests | 15 | 134 (132 run everywhere, 2 need network) (golden dates, 2,000-date sweep, CLI fuzz, hostile CSV, Windows console emulation, README commands, packaging checks) |
-| 10,000-job batch | n/a | 0.54-0.59 s here (about 17,000-18,000 jobs/s; noisy shared machine; round 4 measured the same speed as before, so no speed claim changes) |
+| Tests | 15 | 223 (about 219 run with no extras; a few need network or optional packages) (hand-checked golden dates, golden files for text/JSON/CSV/calendar, mutation-style checks of every rule number, seeded property tests, differential checks, calendar conformance, CLI fuzz, hostile CSV, README commands, packaging) |
+| 10,000-job batch | n/a | 0.5-0.65 s here (about 15,000-19,000 jobs/s; noisy shared machine; round 5 changed no hot path) |
 
 Against other tools (all **unverified** as to features; we checked only that the pages below were reachable):
 
 | Tool | What we could check | Everything else |
 |---|---|---|
 | Procore Pay (procore.com/pay) | US-English page text (fetched 2026-11-07, no JS) mentions liens, and does not mention Alberta, Ontario, holdback or prompt payment | Canadian coverage, pricing, deadline features: unverified |
-| Osler "Owner Payment Date Calculator" (osler.com) | Ontario only; one input (date the owner received a proper invoice); three outputs (deficiency notice, notice of non-payment, payment); moves a deadline on a holiday to the next business day; page says "at your own risk" (read 2026-11-07) | Pricing and anything beyond that page: unverified. Note the difference: we print the plain-arithmetic date and show the rolled date separately |
-| BuilderLien (builderlien-landing.pages.dev) | Ontario only; paid ($99 / $199 per month listed); the page was a waitlist with a February 2026 launch when read 2026-11-07 | Whether it launched, and its accuracy: unverified |
+| Osler "Owner Payment Date Calculator" (osler.com) | Ontario only; one input (date the owner received a proper invoice); three outputs (deficiency notice, notice of non-payment, payment); moves a deadline on a holiday to the next business day; page says "at your own risk" (read 2026-11-07; not re-fetched 2026-11-08, the page request failed) | Pricing and anything beyond that page: unverified. Note the difference: we print the plain-arithmetic date and show the rolled date separately |
+| BuilderLien (builderlien-landing.pages.dev) | Ontario only; paid ($99 / $199 per month listed); still a waitlist page with a February 2026 launch date when re-read 2026-11-08 | Whether it launched, and its accuracy: unverified |
 | Norton Rose Fulbright "PPCLA Advisor" | exists (search result 2026-11-07); we did not open it | Alberta coverage and features: unverified |
 | Textura | site not reachable from our environment | unverified |
 | Levelset / other lien-deadline calculators | the lien-deadline URLs we tried returned 404; a 2026-11-07 web search for an AB/ON lien or holdback calculator surfaced law-firm explainers and PDFs (e.g. Bennett Jones, Miller Thomson), not calculators; we did not read them in full | Alberta/Ontario coverage: unverified |
 | Law-firm calculators | not checked | unverified |
 
 We do not claim to beat any of them on features we could not inspect. What this tool offers is narrow and checkable: free, offline, open source, cited to sections, and honest about its gaps. It is not a payment platform, a document-management system or a source of legal advice.
+
+## Use from scripts or AI agents
+
+`--json` is the interface: stable `schema_version`, per-row `id`, exit codes above, errors only on stderr. Example: `holdbackcalc --json --today today --within 14 batch jobs.csv` lists what is overdue or due in two weeks. There is no MCP server or hook; none is claimed.
 
 ## Use as a Python library
 
@@ -131,4 +137,4 @@ for d in ab_invoice(dt.date(2026, 6, 30)):
 
 ## License
 
-MIT. Use it, ship it, no warranty.
+MIT, copyright 2026 Calas Automations Inc. Use it, ship it, no warranty.

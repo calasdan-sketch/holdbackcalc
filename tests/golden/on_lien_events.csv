@@ -1,0 +1,5 @@
+project,command,label,date,weekday,plan_by,days_left,hard,cite,basis
+,on-lien-events,preserve lien by,2026-05-19,Tue,,-62,yes,Construction Act s.31(3),60 days after the earliest applicable event: you last supplied services/materials (2026-03-20)
+,on-lien-events,perfect lien by (commence action),2026-08-17,Mon,,28,yes,Construction Act s.36(2),90 days after the last day the lien could have been preserved; ONLY if the lien was actually preserved first (s.36(1)); a preserved lien may instead be perfected by sheltering under another claimant's action (s.36(4))
+,on-lien-events,publish notice of termination by,2026-03-08,Sun,2026-03-06,-134,yes,"Construction Act s.31(6),(7)",owner or contractor must publish a notice of termination within 7 days; the termination date for s.31 is the date the first notice is published
+,on-lien-events,events not supplied (could make it EARLIER),,,,,no,Construction Act s.31(3),subcontract certified complete

@@ -1,0 +1,10 @@
+lien period expires                               2026-07-14 Tue  OVERDUE 6d    60-day preservation period  [Construction Act s.31]
+owner must pay contractor (holdback)              2026-07-28 Tue  in 8d         lien period (60) + owner has 14 days to pay after expiry — up to 74 days from the event with no preserved lien  [Construction Act s.26(8)]
+contractor passes down (if paid on the due date)  2026-08-11 Tue  in 22d        14 days after receipt to pay downstream parties  [Construction Act s.26(8)]
+holdback to retain (amount, not a date)                    —                    CAD 80,000.00 x 10% = CAD 8,000.00 retained. The statute applies the rate to the price of the services or materials supplied; you chose the base (check with your accountant or lawyer whether tax is in it). Rounded half-up to the cent (the rounding rule is not stated in the text we read - unverified).  [Construction Act s.22(1)]
+
+Check scope before relying on this:
+  - Contracts/procurements that started before July 1, 2018 stay under the old Act (Construction Act s.87.3(1)).
+  - Prompt-payment and adjudication Parts do not apply to contracts entered into before Oct 1, 2019 (Construction Act s.87.3(4)).
+
+Administrative reminders, not legal advice — verify anything that matters.

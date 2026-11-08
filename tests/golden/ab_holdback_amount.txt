@@ -1,0 +1,11 @@
+major lien fund: retention/safe-payment date  2026-07-31 Fri  in 11d        10% retained for 60 days from the certificate of substantial performance; payment may validly be made after that if no lien is registered  [PPCLA ss.18(1), 27(2)(a)]
+minor lien fund: retention/safe-payment date  2026-10-31 Sat  in 103d       10% of post-certificate work retained for 60 days from completion  [PPCLA ss.23(1), 27(2)(b)]
+    note: falls on a weekend/holiday - last business day to act is 2026-10-30 (Fri)
+annual/phased holdback payment                         —                    an owner MUST pay holdback early only if the contract provides annual/phased payment, the price exceeds $10,000,000, and no liens are filed - not computed  [PPCLA s.24.1; Alta Reg 23/2022 s.2]
+holdback to retain (amount, not a date)                —                    CAD 125,000.50 x 10% = CAD 12,500.05 retained. The statute applies the rate to the value of the work actually done; you chose the base (check with your accountant or lawyer whether tax is in it). Rounded half-up to the cent (the rounding rule is not stated in the text we read - unverified).  [PPCLA ss.18(1), 23(1)]
+
+Check scope before relying on this:
+  - Alberta government (Public Works Act) contracts are outside the PPCLA payment timelines (alberta.ca prompt-payment page).
+  - Contracts that pre-date the Aug 29, 2022 start of the new rules may follow the old Act (alberta.ca prompt-payment page).
+
+Administrative reminders, not legal advice — verify anything that matters.

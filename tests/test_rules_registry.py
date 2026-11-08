@@ -72,7 +72,7 @@ def test_verifier_skips_a_shell_page_instead_of_failing(tmp_path, capsys):
     tool = _load_tool()
     tool.MIN_CHARS = 20_000
     (tmp_path / "ON_ACT.html").write_text("<html><body>Loading...</body></html>")
-    assert tool.main(["--from-dir", str(tmp_path)]) == 0       # nothing FAILED
+    assert tool.main(["--from-dir", str(tmp_path)]) == 3       # nothing FAILED, nothing checked: not a pass
     out = capsys.readouterr()
     assert "FAIL" not in out.out and "SKIPPED on.lien.preserve_days" in out.out
     assert "not the statute text" in out.err

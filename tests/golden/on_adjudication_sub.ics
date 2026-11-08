@@ -1,0 +1,29 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Calas Automations Inc.//holdbackcalc deadlines//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:holdbackcalc deadlines
+BEGIN:VEVENT
+UID:c86c27cc85e21527afcff7b3@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260709
+DTEND;VALUE=DATE:20260710
+SUMMARY:notice of adjudication by
+DESCRIPTION:no adjudication of a subcontract if notice is given more than 9
+ 0 days after the earliest of the listed dates (2026-04-10)\, unless the pa
+ rties agree otherwise [Construction Act s.13.5(3)\,(3.1)] Administrative r
+ eminder\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:notice of adjudication by
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:notice of adjudication by
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+END:VCALENDAR

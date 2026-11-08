@@ -1,0 +1,15 @@
+publish annual-release notice by       2026-03-15 Sun  OVERDUE 127d  notice within 14 days of each contract anniversary  [Construction Act s.26(3)]
+    note: that day is a Sunday/holiday; the statute may allow 2026-03-16 - plan to the earlier date
+    note: falls on a weekend/holiday - last business day to act is 2026-03-13 (Fri)
+notice actually published              2026-03-10 Tue  past 132d     you reported this date  [Construction Act s.26(3)]
+payment window opens                   2026-05-09 Sat  past 72d      no earlier than 60 days after publication  [Construction Act s.26(4)]
+    note: falls on a weekend/holiday - last business day to act is 2026-05-08 (Fri)
+latest payment of accrued holdback     2026-05-23 Sat  OVERDUE 58d   no later than 74 days after publication, unless a lien is preserved/perfected  [Construction Act s.26(4)]
+    note: falls on a weekend/holiday - last business day to act is 2026-05-22 (Fri)
+contractor passes down (from payment)           —                    14 days after receipt — add to whichever payment date applies  [Construction Act s.26(5)]
+
+Check scope before relying on this:
+  - Contracts/procurements that started before July 1, 2018 stay under the old Act (Construction Act s.87.3(1)).
+  - Prompt-payment and adjudication Parts do not apply to contracts entered into before Oct 1, 2019 (Construction Act s.87.3(4)).
+
+Administrative reminders, not legal advice — verify anything that matters.

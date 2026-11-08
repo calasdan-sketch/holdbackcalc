@@ -131,7 +131,7 @@ def test_json_has_schema_and_tool_version(capsys):
 # ---- verify-sources subcommand ----------------------------------------------------
 def test_verify_sources_subcommand_runs_offline(tmp_path, capsys):
     rc, cap = run(capsys, "verify-sources", "--from-dir", str(tmp_path))
-    assert rc == 0                                       # nothing present -> everything SKIPPED, nothing FAILED
+    assert rc == 3                                       # nothing present -> all SKIPPED, nothing FAILED, but NOT a pass
     assert "0 passed, 0 failed, 35 skipped" in cap.out
     assert "not a pass" in cap.err
 

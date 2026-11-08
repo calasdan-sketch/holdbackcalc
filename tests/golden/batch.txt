@@ -1,0 +1,56 @@
+Job K   publish annual-release notice by                                  2026-03-15 Sun  OVERDUE 127d  notice within 14 days of each contract anniversary  [Construction Act s.26(3)]
+            note: that day is a Sunday/holiday; the statute may allow 2026-03-16 - plan to the earlier date
+            note: falls on a weekend/holiday - last business day to act is 2026-03-13 (Fri)
+Job K   payment window opens (if notice is published on its last day)     2026-05-14 Thu  past 67d      payment no earlier than 60 days after the notice is published; an earlier notice means an earlier date - pass --published DATE for the exact window  [Construction Act s.26(4)]
+Job K   latest possible payment (if notice is published on its last day)  2026-05-28 Thu  OVERDUE 53d   payment no later than 74 days after the notice is published, unless a lien is preserved/perfected; an earlier notice means an earlier date  [Construction Act s.26(4)]
+Job F   preserve lien by                                                  2026-05-31 Sun  OVERDUE 50d   lien must be preserved within 60 days of the trigger event  [Construction Act s.31]
+            note: that day is a Sunday/holiday; the statute may allow 2026-06-01 - plan to the earlier date
+            note: falls on a weekend/holiday - last business day to act is 2026-05-29 (Fri)
+Job B   payment due (contractor → sub)                                    2026-07-08 Wed  OVERDUE 12d   contractor pays the subcontractor within 7 calendar days after receiving the owner's payment  [PPCLA s.32.3(1)]
+Job A   dispute notice by (owner)                                         2026-07-14 Tue  OVERDUE 6d    owner must give notice of dispute within 14 calendar days of receipt  [PPCLA s.32.2(2)]
+Job G   lien period expires                                               2026-07-14 Tue  OVERDUE 6d    60-day preservation period  [Construction Act s.31]
+Job I   deficiency notice window closes                                   2026-07-22 Wed  in 2d         invoice is deemed proper unless the owner gives written notice of deficiency within 7 days  [Construction Act s.6.1(2)]
+Job A   payment due (owner → contractor)                                  2026-07-28 Tue  in 8d         proper invoice payable within 28 calendar days  [PPCLA s.32.2(1)]
+Job G   owner must pay contractor (holdback)                              2026-07-28 Tue  in 8d         lien period (60) + owner has 14 days to pay after expiry — up to 74 days from the event with no preserved lien  [Construction Act s.26(8)]
+Job I   owner's notice of non-payment by                                  2026-07-29 Wed  in 9d         owner may withhold only if it gives the prescribed notice of non-payment within 14 days  [Construction Act s.6.4(2)]
+Job A   contractor pays subs if owner has not paid                        2026-08-04 Tue  in 15d        if the owner has not paid, the contractor must still pay subs within 35 days of giving the invoice, unless it sends the s.32.3(5)/(6) notices  [PPCLA s.32.3(4)]
+Job G   contractor passes down (if paid on the due date)                  2026-08-11 Tue  in 22d        14 days after receipt to pay downstream parties  [Construction Act s.26(8)]
+Job I   payment due (owner → contractor)                                  2026-08-12 Wed  in 23d        proper invoice payable within 28 days  [Construction Act s.6.4(1)]
+Job M   notice of adjudication by                                         2026-08-13 Thu  in 24d        no adjudication of a contract if notice is given more than 90 days after the date completed, abandoned or terminated (2026-05-15), unless the parties agree otherwise  [Construction Act s.13.5(3),(3.1)]
+Job I   contractor pays subs if owner has not paid                        2026-08-19 Wed  in 30d        if the owner has not paid, the contractor must still pay subs within 35 days of giving the invoice, unless it sends the s.6.5(5)/(6) notices  [Construction Act s.6.5(4)]
+Job F   perfect lien by (commence action)                                 2026-08-29 Sat  in 40d        90 days to commence the action, running from the last day the lien could have been preserved; ONLY if the lien was actually preserved first (s.36(1)) - a missed preservation date cannot be cured by this one  [Construction Act s.36(2)]
+            note: falls on a weekend/holiday - last business day to act is 2026-08-28 (Fri)
+            note: Saturday filing deadline - if the office where you file is closed, the time-limit statute MAY extend it to the next open day (ON Legislation Act s.89(2); AB Interpretation Act s.22(2)). Do not rely on that; file by the Friday.
+Job D   major lien fund: retention/safe-payment date                      2026-08-30 Sun  in 41d        10% retained for 90 days from the certificate of substantial performance; payment may validly be made after that if no lien is registered  [PPCLA ss.18(1), 27(2)(a)]
+            note: that day is a Sunday/holiday; the statute may allow 2026-08-31 - plan to the earlier date
+            note: falls on a weekend/holiday - last business day to act is 2026-08-28 (Fri)
+Job E   notice of adjudication by                                         2026-09-30 Wed  in 72d        no adjudication if notice is given more than 30 days after the date of final payment (unless the parties agree otherwise)  [PPCLA s.33.4(2)]
+Job D   minor lien fund: retention/safe-payment date                      2026-11-30 Mon  in 133d       10% of post-certificate work retained for 90 days from completion  [PPCLA ss.23(1), 27(2)(b)]
+Job C0  register lien by                                                  2026-12-14 Mon  in 147d       register the lien within 60 days of the last materials/services supplied, or of completion or abandonment of the contract/subcontract  [PPCLA s.41]
+Job H   deficiency notice window closes                                   2026-12-25 Fri  in 158d       invoice is deemed proper unless the owner gives written notice of deficiency within 7 days  [Construction Act s.6.1(2)]
+            note: that day is a Sunday/holiday; the statute may allow 2026-12-28 - plan to the earlier date
+            note: falls on a weekend/holiday - last business day to act is 2026-12-24 (Thu)
+Job J   payment due (contractor → sub)                                    2026-12-31 Thu  in 164d       contractor pays each subcontractor within 7 days after receiving payment  [Construction Act s.6.5(1)]
+Job C   register lien by                                                  2027-01-13 Wed  in 177d       register the lien within 90 days of the last materials/services supplied, or of completion or abandonment of the contract/subcontract  [PPCLA s.41]
+Job C   commence action + register lis pendens by                         2027-05-30 Sun  in 314d       the registered lien ceases to exist unless an action is started and a certificate of lis pendens registered within 180 days of registration  [PPCLA s.43(1)]
+            note: that day is a Sunday/holiday; the statute may allow 2027-05-31 - plan to the earlier date
+            note: falls on a weekend/holiday - last business day to act is 2027-05-28 (Fri)
+Job L   first annual-release anniversary                                  2027-06-15 Tue  in 330d       contract entered before 2026-01-01: first anniversary to which s.26 applies is the second one after the in-force date (reading of s.87.4(4)1; confirm); that release must include ALL holdback accrued before it (s.87.4(4)2)  [Construction Act s.87.4(4)]
+Job L   publish annual-release notice by                                  2027-06-29 Tue  in 344d       notice within 14 days of each contract anniversary  [Construction Act s.26(3)]
+Job L   payment window opens (if notice is published on its last day)     2027-08-28 Sat  in 404d       payment no earlier than 60 days after the notice is published; an earlier notice means an earlier date - pass --published DATE for the exact window  [Construction Act s.26(4)]
+            note: falls on a weekend/holiday - last business day to act is 2027-08-27 (Fri)
+Job L   latest possible payment (if notice is published on its last day)  2027-09-11 Sat  in 418d       payment no later than 74 days after the notice is published, unless a lien is preserved/perfected; an earlier notice means an earlier date  [Construction Act s.26(4)]
+            note: falls on a weekend/holiday - last business day to act is 2027-09-10 (Fri)
+Job A   holdback release: use ab-holdback                                          —                    holdback release runs from the certificate of substantial performance or completion date, not the invoice date - run `ab-holdback`  [PPCLA ss.18, 23, 27]
+Job C0  commence action + register lis pendens by                                  —                    180 days after the date the lien is REGISTERED - pass --registered DATE to compute  [PPCLA s.43(1)]
+Job D   annual/phased holdback payment                                             —                    an owner MUST pay holdback early only if the contract provides annual/phased payment, the price exceeds $10,000,000, and no liens are filed - not computed  [PPCLA s.24.1; Alta Reg 23/2022 s.2]
+Job K   contractor passes down (from payment)                                      —                    14 days after receipt — add to whichever payment date applies  [Construction Act s.26(5)]
+Job L   contractor passes down (from payment)                                      —                    14 days after receipt — add to whichever payment date applies  [Construction Act s.26(5)]
+
+Check scope before relying on this:
+  - Alberta government (Public Works Act) contracts are outside the PPCLA payment timelines (alberta.ca prompt-payment page).
+  - Contracts that pre-date the Aug 29, 2022 start of the new rules may follow the old Act (alberta.ca prompt-payment page).
+  - Contracts/procurements that started before July 1, 2018 stay under the old Act (Construction Act s.87.3(1)).
+  - Prompt-payment and adjudication Parts do not apply to contracts entered into before Oct 1, 2019 (Construction Act s.87.3(4)).
+
+Administrative reminders, not legal advice — verify anything that matters.

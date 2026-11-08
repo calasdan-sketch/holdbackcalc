@@ -11,6 +11,7 @@ requires-python = ">=3.9"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "Calas Automations Inc." }]
+maintainers = [{ name = "Calas Automations Inc." }]
 keywords = ["prompt-payment", "holdback", "construction", "lien", "alberta", "ontario", "deadlines", "construction-act", "canada"]
 classifiers = [
     "Development Status :: 4 - Beta",

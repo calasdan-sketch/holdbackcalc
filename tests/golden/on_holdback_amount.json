@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "tool_version": "0.2.0",
+  "schedule": [
+    {
+      "id": "lien_period_expires",
+      "label": "lien period expires",
+      "date": "2026-07-14",
+      "basis": "60-day preservation period",
+      "days": 60,
+      "hard": true,
+      "cite": "Construction Act s.31",
+      "rolled_forward_to": null,
+      "weekday": "Tue",
+      "plan_by": null,
+      "closed_office_note": false,
+      "days_left": -6
+    },
+    {
+      "id": "owner_must_pay_contractor_holdback",
+      "label": "owner must pay contractor (holdback)",
+      "date": "2026-07-28",
+      "basis": "lien period (60) + owner has 14 days to pay after expiry — up to 74 days from the event with no preserved lien",
+      "days": 74,
+      "hard": true,
+      "cite": "Construction Act s.26(8)",
+      "rolled_forward_to": null,
+      "weekday": "Tue",
+      "plan_by": null,
+      "closed_office_note": false,
+      "days_left": 8
+    },
+    {
+      "id": "contractor_passes_down_if_paid_on_the_due_date",
+      "label": "contractor passes down (if paid on the due date)",
+      "date": "2026-08-11",
+      "basis": "14 days after receipt to pay downstream parties",
+      "days": 88,
+      "hard": false,
+      "cite": "Construction Act s.26(8)",
+      "rolled_forward_to": null,
+      "weekday": "Tue",
+      "plan_by": null,
+      "closed_office_note": false,
+      "days_left": 22
+    },
+    {
+      "id": "holdback_to_retain_amount_not_a_date",
+      "label": "holdback to retain (amount, not a date)",
+      "date": null,
+      "basis": "CAD 80,000.00 x 10% = CAD 8,000.00 retained. The statute applies the rate to the price of the services or materials supplied; you chose the base (check with your accountant or lawyer whether tax is in it). Rounded half-up to the cent (the rounding rule is not stated in the text we read - unverified).",
+      "days": 0,
+      "hard": false,
+      "cite": "Construction Act s.22(1)",
+      "rolled_forward_to": null,
+      "weekday": null,
+      "plan_by": null,
+      "closed_office_note": false,
+      "days_left": null
+    }
+  ],
+  "note": "administrative reminders, not legal advice",
+  "disclaimer": "Administrative reminder, not legal advice - verify with counsel.",
+  "applicability": [
+    "Contracts/procurements that started before July 1, 2018 stay under the old Act (Construction Act s.87.3(1)).",
+    "Prompt-payment and adjudication Parts do not apply to contracts entered into before Oct 1, 2019 (Construction Act s.87.3(4))."
+  ],
+  "rules_read_on": "2026-11-07",
+  "stale_warning": null
+}

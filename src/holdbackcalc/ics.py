@@ -44,13 +44,17 @@ def build_ics(items: Iterable[Tuple[str, str, Deadline]], stamp: Optional[dt.dat
         except (OverflowError, OSError, ValueError):
             stamp = None
     stamp = stamp or dt.datetime.now(dt.timezone.utc).replace(tzinfo=None)
-    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//holdbackcalc//deadlines//EN",
-             "CALSCALE:GREGORIAN", "METHOD:PUBLISH"]
+    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Calas Automations Inc.//holdbackcalc deadlines//EN",
+             "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "X-WR-CALNAME:holdbackcalc deadlines"]
+    seen = set()
     for project, command, d in items:
         if d.date is None:
             continue
         project = clean(project)
         uid = hashlib.sha256(f"{project}|{command}|{d.label}|{d.date}".encode()).hexdigest()[:24]
+        if uid in seen:        # the same job listed twice would otherwise give duplicate UIDs (invalid, and
+            continue           # calendars may drop or double-book them)
+        seen.add(uid)
         title = f"{project}: {d.label}" if project else d.label
         if not d.hard:
             title = "Reminder - " + title

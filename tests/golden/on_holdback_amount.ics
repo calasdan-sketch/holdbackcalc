@@ -1,0 +1,59 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Calas Automations Inc.//holdbackcalc deadlines//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:holdbackcalc deadlines
+BEGIN:VEVENT
+UID:bc123e0135b0b839b0a79c73@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260714
+DTEND;VALUE=DATE:20260715
+SUMMARY:lien period expires
+DESCRIPTION:60-day preservation period [Construction Act s.31] Administrati
+ ve reminder\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:lien period expires
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:lien period expires
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:46c0d8c6402562bd27e7cad7@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260728
+DTEND;VALUE=DATE:20260729
+SUMMARY:owner must pay contractor (holdback)
+DESCRIPTION:lien period (60) + owner has 14 days to pay after expiry — up
+  to 74 days from the event with no preserved lien [Construction Act s.26(8
+ )] Administrative reminder\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:owner must pay contractor (holdback)
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:owner must pay contractor (holdback)
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:775194d8e5b4b9cf1e9379e4@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260811
+DTEND;VALUE=DATE:20260812
+SUMMARY:Reminder - contractor passes down (if paid on the due date)
+DESCRIPTION:14 days after receipt to pay downstream parties [Construction A
+ ct s.26(8)] Administrative reminder\, not legal advice - verify with couns
+ el.
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR

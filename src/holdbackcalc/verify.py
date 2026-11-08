@@ -113,6 +113,7 @@ def main(argv=None):
     print(f"\n{passed} passed, {failed} failed, {skipped} skipped of {len(REGISTRY)} rules")
     if passed == 0 and failed == 0:
         print("Nothing could be checked (every source was unavailable); this is not a pass.", file=sys.stderr)
+        return 3                # fail closed: a script that gates on this command must not see "OK"
     return 1 if failed else 0
 
 

@@ -1,0 +1,73 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Calas Automations Inc.//holdbackcalc deadlines//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:holdbackcalc deadlines
+BEGIN:VEVENT
+UID:f3ec6d689bf4a114ecf14bbe@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260315
+DTEND;VALUE=DATE:20260316
+SUMMARY:publish annual-release notice by
+DESCRIPTION:notice within 14 days of each contract anniversary [Constructio
+ n Act s.26(3)] May roll forward to 2026-03-16 under the holiday rule - do 
+ not rely on it. Falls on a weekend/holiday: last business day to act is 20
+ 26-03-13. Administrative reminder\, not legal advice - verify with counsel
+ .
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:publish annual-release notice by
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:publish annual-release notice by
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:3a381718566a9c9dad4c4bbe@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260310
+DTEND;VALUE=DATE:20260311
+SUMMARY:Reminder - notice actually published
+DESCRIPTION:you reported this date [Construction Act s.26(3)] Administrativ
+ e reminder\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:a5072df2bb0da0d7ef609e80@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260509
+DTEND;VALUE=DATE:20260510
+SUMMARY:Reminder - payment window opens
+DESCRIPTION:no earlier than 60 days after publication [Construction Act s.2
+ 6(4)] Falls on a weekend/holiday: last business day to act is 2026-05-08. 
+ Administrative reminder\, not legal advice - verify with counsel.
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:5eead7e579e1f3abd1b2c32a@holdbackcalc
+DTSTAMP:20260101T000000Z
+DTSTART;VALUE=DATE:20260523
+DTEND;VALUE=DATE:20260524
+SUMMARY:latest payment of accrued holdback
+DESCRIPTION:no later than 74 days after publication\, unless a lien is pres
+ erved/perfected [Construction Act s.26(4)] Falls on a weekend/holiday: las
+ t business day to act is 2026-05-22. Administrative reminder\, not legal a
+ dvice - verify with counsel.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:latest payment of accrued holdback
+TRIGGER:-P7D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:latest payment of accrued holdback
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+END:VCALENDAR

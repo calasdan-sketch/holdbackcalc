@@ -9,7 +9,9 @@ without counsel (see holidays.py for exactly what is and is not modelled).
 from __future__ import annotations
 
 import datetime as dt
+import re
 from dataclasses import dataclass
+from decimal import ROUND_HALF_UP, Decimal
 from typing import Dict, List, Optional
 
 from . import rules as R
@@ -38,8 +40,14 @@ class Deadline:
     plan_by: Optional[dt.date] = None  # last business day on/before `date` when `date` is a weekend/holiday
     closed_office: bool = False        # filing deadline on a Saturday: office-closed extension MAY apply
 
+    @property
+    def id(self) -> str:
+        """Stable machine key for this row (lower-case slug of the label); labels may be reworded
+        between versions, the id is what scripts should key on. Unique within one command's output."""
+        return re.sub(r"[^a-z0-9]+", "_", self.label.lower()).strip("_")
+
     def as_dict(self):
-        return {"label": self.label, "date": self.date.isoformat() if self.date else None,
+        return {"id": self.id, "label": self.label, "date": self.date.isoformat() if self.date else None,
                 "basis": self.basis, "days": self.days, "hard": self.hard,
                 "cite": self.cite,
                 "rolled_forward_to": self.rolled.isoformat() if self.rolled else None,
@@ -80,6 +88,29 @@ def _sector(sector: str) -> None:
 def _ab_days(sector: str, standard: int, special: int) -> int:
     _sector(sector)
     return standard if sector == "standard" else special
+
+
+def holdback_amount(province: str, base: Decimal) -> Deadline:
+    """How much to retain: 10% of the amount you enter (AB: value of the work actually done, PPCLA
+    s.18(1)/s.23(1); ON: price of the services or materials, Construction Act s.22(1)).
+
+    The tool does not decide your base (for example whether GST/HST is in it) and the statutes we
+    read do not prescribe a rounding rule (unverified), so the result is rounded half-up to the cent.
+    """
+    if province not in ("AB", "ON"):
+        raise ValueError(f"unknown province {province!r}")
+    if not isinstance(base, Decimal) or not base.is_finite() or base < 0:
+        raise ValueError("amount must be a finite number of dollars, 0 or more")
+    rate = Decimal(str(R.AB_HOLDBACK_RATE if province == "AB" else R.ON_HOLDBACK_RATE))
+    held = (base * rate).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    what = ("the value of the work actually done" if province == "AB"
+            else "the price of the services or materials supplied")
+    return Deadline("holdback to retain (amount, not a date)", None,
+                    f"CAD {base:,.2f} x {rate:.0%} = CAD {held:,.2f} retained. The statute applies the "
+                    f"rate to {what}; you chose the base (check with your accountant or lawyer whether "
+                    "tax is in it). Rounded half-up to the cent (the rounding rule is not stated in "
+                    "the text we read - unverified).", 0, hard=False,
+                    cite="PPCLA ss.18(1), 23(1)" if province == "AB" else "Construction Act s.22(1)")
 
 
 # ----------------------------------------------------------------- Alberta

@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "tool_version": "0.2.0",
+  "schedule": [
+    {
+      "id": "publish_annual_release_notice_by",
+      "label": "publish annual-release notice by",
+      "date": "2026-03-15",
+      "basis": "notice within 14 days of each contract anniversary",
+      "days": 14,
+      "hard": true,
+      "cite": "Construction Act s.26(3)",
+      "rolled_forward_to": "2026-03-16",
+      "weekday": "Sun",
+      "plan_by": "2026-03-13",
+      "closed_office_note": false,
+      "days_left": -127
+    },
+    {
+      "id": "notice_actually_published",
+      "label": "notice actually published",
+      "date": "2026-03-10",
+      "basis": "you reported this date",
+      "days": 9,
+      "hard": false,
+      "cite": "Construction Act s.26(3)",
+      "rolled_forward_to": null,
+      "weekday": "Tue",
+      "plan_by": null,
+      "closed_office_note": false,
+      "days_left": -132
+    },
+    {
+      "id": "payment_window_opens",
+      "label": "payment window opens",
+      "date": "2026-05-09",
+      "basis": "no earlier than 60 days after publication",
+      "days": 60,
+      "hard": false,
+      "cite": "Construction Act s.26(4)",
+      "rolled_forward_to": null,
+      "weekday": "Sat",
+      "plan_by": "2026-05-08",
+      "closed_office_note": false,
+      "days_left": -72
+    },
+    {
+      "id": "latest_payment_of_accrued_holdback",
+      "label": "latest payment of accrued holdback",
+      "date": "2026-05-23",
+      "basis": "no later than 74 days after publication, unless a lien is preserved/perfected",
+      "days": 74,
+      "hard": true,
+      "cite": "Construction Act s.26(4)",
+      "rolled_forward_to": null,
+      "weekday": "Sat",
+      "plan_by": "2026-05-22",
+      "closed_office_note": false,
+      "days_left": -58
+    },
+    {
+      "id": "contractor_passes_down_from_payment",
+      "label": "contractor passes down (from payment)",
+      "date": null,
+      "basis": "14 days after receipt — add to whichever payment date applies",
+      "days": 0,
+      "hard": false,
+      "cite": "Construction Act s.26(5)",
+      "rolled_forward_to": null,
+      "weekday": null,
+      "plan_by": null,
+      "closed_office_note": false,
+      "days_left": null
+    }
+  ],
+  "note": "administrative reminders, not legal advice",
+  "disclaimer": "Administrative reminder, not legal advice - verify with counsel.",
+  "applicability": [
+    "Contracts/procurements that started before July 1, 2018 stay under the old Act (Construction Act s.87.3(1)).",
+    "Prompt-payment and adjudication Parts do not apply to contracts entered into before Oct 1, 2019 (Construction Act s.87.3(4))."
+  ],
+  "rules_read_on": "2026-11-07",
+  "stale_warning": null
+}

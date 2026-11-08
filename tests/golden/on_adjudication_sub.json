@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "tool_version": "0.2.0",
+  "schedule": [
+    {
+      "id": "notice_of_adjudication_by",
+      "label": "notice of adjudication by",
+      "date": "2026-07-09",
+      "basis": "no adjudication of a subcontract if notice is given more than 90 days after the earliest of the listed dates (2026-04-10), unless the parties agree otherwise",
+      "days": 90,
+      "hard": true,
+      "cite": "Construction Act s.13.5(3),(3.1)",
+      "rolled_forward_to": null,
+      "weekday": "Thu",
+      "plan_by": null,
+      "closed_office_note": false,
+      "days_left": -11
+    }
+  ],
+  "note": "administrative reminders, not legal advice",
+  "disclaimer": "Administrative reminder, not legal advice - verify with counsel.",
+  "applicability": [
+    "Contracts/procurements that started before July 1, 2018 stay under the old Act (Construction Act s.87.3(1)).",
+    "Prompt-payment and adjudication Parts do not apply to contracts entered into before Oct 1, 2019 (Construction Act s.87.3(4))."
+  ],
+  "rules_read_on": "2026-11-07",
+  "stale_warning": null
+}

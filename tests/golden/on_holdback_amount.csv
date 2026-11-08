@@ -1,0 +1,5 @@
+project,command,label,date,weekday,plan_by,days_left,hard,cite,basis
+,on-holdback,lien period expires,2026-07-14,Tue,,-6,yes,Construction Act s.31,60-day preservation period
+,on-holdback,owner must pay contractor (holdback),2026-07-28,Tue,,8,yes,Construction Act s.26(8),lien period (60) + owner has 14 days to pay after expiry — up to 74 days from the event with no preserved lien
+,on-holdback,contractor passes down (if paid on the due date),2026-08-11,Tue,,22,no,Construction Act s.26(8),14 days after receipt to pay downstream parties
+,on-holdback,"holdback to retain (amount, not a date)",,,,,no,Construction Act s.22(1),"CAD 80,000.00 x 10% = CAD 8,000.00 retained. The statute applies the rate to the price of the services or materials supplied; you chose the base (check with your accountant or lawyer whether tax is in it). Rounded half-up to the cent (the rounding rule is not stated in the text we read - unverified)."

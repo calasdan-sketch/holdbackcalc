@@ -1,0 +1,6 @@
+project,command,label,date,weekday,plan_by,days_left,hard,cite,basis
+,on-annual,publish annual-release notice by,2026-03-15,Sun,2026-03-13,-127,yes,Construction Act s.26(3),notice within 14 days of each contract anniversary
+,on-annual,notice actually published,2026-03-10,Tue,,-132,no,Construction Act s.26(3),you reported this date
+,on-annual,payment window opens,2026-05-09,Sat,2026-05-08,-72,no,Construction Act s.26(4),no earlier than 60 days after publication
+,on-annual,latest payment of accrued holdback,2026-05-23,Sat,2026-05-22,-58,yes,Construction Act s.26(4),"no later than 74 days after publication, unless a lien is preserved/perfected"
+,on-annual,contractor passes down (from payment),,,,,no,Construction Act s.26(5),14 days after receipt — add to whichever payment date applies
